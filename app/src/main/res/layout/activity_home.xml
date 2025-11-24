@@ -1,44 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:layout_height="match_parent">
 
-    <!-- HEADER -->
-    <LinearLayout
+    <!-- NAV HOST -->
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:background="#4A4A6A"
-        android:gravity="center">
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_nav"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/home_graph" />
 
-        <TextView
-            android:text="Course List"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"/>
-    </LinearLayout>
-
-    <!-- Search -->
-    <EditText
-        android:id="@+id/edtSearch"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_margin="16dp"
-        android:layout_below="@+id/header"
-        android:hint="Search"
-        android:background="@drawable/rounded_edittext"/>
-
-    <!-- ListView Untuk Kursus -->
-    <ListView
-        android:id="@+id/listCourse"
+    <!-- BOTTOM NAVIGATION -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/edtSearch"
-        android:padding="16dp"/>
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/bottom_nav_menu" />
 
-    <!-- Bottom Nav -->
-    <include
-        android:id="@+id/bottomNav"
-        layout="@layout/activity_main"
-        android:layout_alignParentBottom="true"/>
 </RelativeLayout>
