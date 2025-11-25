@@ -6,6 +6,7 @@ import android.content.Intent
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import android.content.Context
 
 class LoginActivity : AppCompatActivity() {
 
@@ -29,13 +30,23 @@ class LoginActivity : AppCompatActivity() {
 
             Toast.makeText(this, "Welcome $username", Toast.LENGTH_SHORT).show()
 
-            // 👉 BENERIN: pindah ke MainActivity, bukan HomeActivity
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("USERNAME", username)
-            intent.putExtra("PASSWORD", password)
+            // ================================
+            // SIMPAN ke SharedPreferences
+            // ================================
+            val sharedPref = getSharedPreferences("USER_DATA", Context.MODE_PRIVATE)
+            val editor = sharedPref.edit()
+
+            editor.putString("fullname", username)
+            editor.putString("password", password)
+
+            editor.apply()
+            // ================================
+
+            // Pindah ke HomeActivity
+            val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
 
-            finish() // supaya tidak bisa back ke login
+            finish()
         }
     }
 }

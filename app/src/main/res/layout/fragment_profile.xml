@@ -107,7 +107,7 @@
                 android:id="@+id/btnShowPassword"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:src="@drawable/ic_eye_off"
+                android:src="@drawable/ic_eye_of"
                 app:tint="#555" />
         </LinearLayout>
 

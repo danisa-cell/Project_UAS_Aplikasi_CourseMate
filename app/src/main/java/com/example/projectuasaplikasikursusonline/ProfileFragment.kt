@@ -1,5 +1,6 @@
 package com.example.projectuasaplikasikursusonline
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,8 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
+import android.text.InputType
 import androidx.appcompat.app.AppCompatActivity
-import com.example.projectuasaplikasikursusonline.R
 
 class ProfileFragment : Fragment() {
 
@@ -21,37 +23,58 @@ class ProfileFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
-        // Ambil EditText dari layout
+        // View dari layout
         val etName = view.findViewById<EditText>(R.id.etName)
         val etPassword = view.findViewById<EditText>(R.id.etPassword)
         val btnLogout = view.findViewById<Button>(R.id.btnLogout)
+        val btnShow = view.findViewById<ImageView>(R.id.btnShowPassword)
 
-        // Ambil data kiriman dari MainActivity
-        val username = arguments?.getString("USERNAME")
-        val password = arguments?.getString("PASSWORD")
+        // ============================================
+        //        AMBIL DATA DARI LOGIN (SharedPref)
+        // ============================================
+        val sharedPref = requireActivity()
+            .getSharedPreferences("USER_DATA", Context.MODE_PRIVATE)
 
-        // Tampilkan ke EditText
+        val username = sharedPref.getString("fullname", "")
+        val password = sharedPref.getString("password", "")
+
         etName.setText(username)
         etPassword.setText(password)
 
-        // =============================
-        //        LOGOUT BUTTON
-        // =============================
-        btnLogout.setOnClickListener {
+        // ============================================
+        //          SHOW / HIDE PASSWORD FIXED
+        // ============================================
+        var visible = false
 
-            // Hapus session (jika ada)
-            val sharedPref = requireActivity()
-                .getSharedPreferences("USER", AppCompatActivity.MODE_PRIVATE)
+        btnShow.setOnClickListener {
+            visible = !visible
+
+            if (visible) {
+                // Password terlihat
+                etPassword.inputType =
+                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                btnShow.setImageResource(R.drawable.ic_eye_on)
+            } else {
+                // Password disembunyikan
+                etPassword.inputType =
+                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                btnShow.setImageResource(R.drawable.ic_eye_of)
+            }
+
+            // Cursor tetap di akhir
+            etPassword.setSelection(etPassword.text.length)
+        }
+
+        // ============================================
+        //                  LOGOUT
+        // ============================================
+        btnLogout.setOnClickListener {
 
             sharedPref.edit().clear().apply()
 
-            // Pindah ke LoginActivity
             val intent = Intent(requireContext(), LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
-
-            // Tutup MainActivity
-            requireActivity().finish()
         }
 
         return view
