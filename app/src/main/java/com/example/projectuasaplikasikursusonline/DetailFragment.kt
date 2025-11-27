@@ -17,6 +17,8 @@ class DetailFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
 
+
+
         // Ambil data dari Bundle (bukan Safe Args)
         val imageRes = arguments?.getInt("imageRes") ?: 0
         val title = arguments?.getString("title") ?: ""
@@ -37,6 +39,8 @@ class DetailFragment : Fragment() {
         txtTutor.text = tutorName
         imgTutor.setImageResource(tutorImage)
         txtDesc.text = description
+
+
 
         return view
     }
