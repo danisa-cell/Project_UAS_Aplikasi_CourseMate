@@ -12,11 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjectUASAplikasiKursusOnline">
         <activity
+            android:name=".CourseAdapter"
+            android:exported="false" />
+        <activity
+            android:name=".course"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
-            android:exported="true">
-
-        </activity>
-        <!-- LOGIN ACTIVITY -->
+            android:exported="true" /> <!-- LOGIN ACTIVITY -->
         <activity
             android:name=".LoginActivity"
             android:exported="true">

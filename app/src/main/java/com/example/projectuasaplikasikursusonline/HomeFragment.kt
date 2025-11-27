@@ -6,52 +6,69 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.EditText
-import android.widget.ListView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class HomeFragment : Fragment() {
 
     private lateinit var edtSearch: EditText
-    private lateinit var listCourse: ListView
-    private lateinit var adapter: ArrayAdapter<String>
+    private lateinit var rvCourse: RecyclerView
+    private lateinit var adapter: CourseAdapter
 
-    // contoh data kursus (boleh kamu ganti)
     private val courseList = listOf(
-        "Android Development",
-        "UI/UX Design",
-        "Web Programming",
-        "Database MySQL",
-        "Java Programming",
-        "Kotlin Dasar",
-        "Cloud Computing",
-        "Cyber Security",
-        "Machine Learning",
-        "Data Analytics"
+        Course(
+            "Android Development", "Rp 250.000", R.drawable.ic_android,
+            "Budi Santoso", R.drawable.tutor_android,
+            "Kelas ini membahas cara membuat aplikasi Android dari dasar hingga mahir. Kamu akan belajar layout, activity, fragment, dan data transfer antar halaman. Selain itu, materi juga mencakup penggunaan RecyclerView, API, dan Firebase. Cocok untuk pemula yang ingin menjadi Android Developer profesional."
+        ),
+        // ... (data lainnya tetap sama)
     )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
         edtSearch = view.findViewById(R.id.edtSearch)
-        listCourse = view.findViewById(R.id.listCourse)
+        rvCourse = view.findViewById(R.id.rvCourse)
 
-        adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, courseList)
-        listCourse.adapter = adapter
+        rvCourse.layoutManager = LinearLayoutManager(requireContext())
 
-        // fitur pencarian
+        adapter = CourseAdapter(courseList) { selectedCourse ->
+
+            // 🔥 Kirim data ke DetailFragment tanpa Safe Args
+            val bundle = Bundle().apply {
+                putString("title", selectedCourse.title)
+                putString("price", selectedCourse.price)
+                putInt("imageRes", selectedCourse.imageRes)
+                putString("tutorName", selectedCourse.tutorName)
+                putInt("tutorImage", selectedCourse.tutorImage)
+                putString("description", selectedCourse.description)
+            }
+
+            findNavController().navigate(
+                R.id.action_homeFragment_to_detailFragment,
+                bundle
+            )
+        }
+
+        rvCourse.adapter = adapter
+
+        // 🔍 Fitur Search
         edtSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                adapter.filter.filter(s)
+                val filtered = courseList.filter {
+                    it.title.contains(s.toString(), ignoreCase = true)
+                }
+                adapter.filterList(filtered)
             }
         })
 

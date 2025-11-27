@@ -10,31 +10,18 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        setContentView(R.layout.activity_main)
 
-        // Ambil data login
-        val username = intent.getStringExtra("USERNAME")
-        val password = intent.getStringExtra("PASSWORD")
-
-        val bundle = Bundle()
-        bundle.putString("USERNAME", username)
-        bundle.putString("PASSWORD", password)
-
-        // ============================
-        //  FIX BAGIAN NAV CONTROLLER
-        // ============================
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        // Ambil navHostFragment dari XML
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
 
         val navController = navHostFragment.navController
 
-        // Set data ke graph (WAJIB pakai getNavInflater!)
-        val navGraph = navController.navInflater.inflate(R.navigation.home_graph)
-        navGraph.setStartDestination(R.id.menu_home) // atau fragment awalmu
-        navController.setGraph(navGraph, bundle)
+        // PENTING: ID HARUS SAMA DENGAN activity_main.xml
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
-        // Bottom Nav
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav)
+        // Hubungkan BottomNav dengan NavController
         bottomNav.setupWithNavController(navController)
     }
 }
