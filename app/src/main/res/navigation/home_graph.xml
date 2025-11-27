@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_graph"
     app:startDestination="@id/homeFragment">
 
@@ -9,26 +8,21 @@
         android:id="@+id/homeFragment"
         android:name="com.example.projectuasaplikasikursusonline.HomeFragment"
         android:label="Home">
-
-        <!-- ARAH NAVIGASI KE DETAIL -->
         <action
             android:id="@+id/action_homeFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
     </fragment>
 
-    <!-- DETAIL FRAGMENT -->
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.example.projectuasaplikasikursusonline.DetailFragment"
         android:label="Detail">
-
         <argument android:name="title" app:argType="string" />
         <argument android:name="price" app:argType="string" />
         <argument android:name="imageRes" app:argType="integer" />
         <argument android:name="tutorName" app:argType="string" />
         <argument android:name="tutorImage" app:argType="integer" />
         <argument android:name="description" app:argType="string" />
-
     </fragment>
 
     <fragment
@@ -44,7 +38,5 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.projectuasaplikasikursusonline.ProfileFragment"
-        android:label="Profile"
-        tools:layout="@layout/fragment_profile" />
-
+        android:label="Profile" />
 </navigation>

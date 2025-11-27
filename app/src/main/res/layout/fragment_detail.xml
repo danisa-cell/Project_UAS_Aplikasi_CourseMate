@@ -3,20 +3,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- =================== HEADER DETAIL =================== -->
-
-
-    <!-- =================== SCROLL CONTENT =================== -->
+    <!-- HEADER -->
     <RelativeLayout
         android:id="@+id/headerDetail"
         android:layout_width="match_parent"
-        android:layout_height="144dp"
+        android:layout_height="125dp"
         android:background="#3A3A4D"
         android:padding="12dp">
 
-        <!-- Tombol Back dalam kotak -->
+        <!-- Back box -->
 
-        <!-- HEADER TENGAH (Ikon + Teks) -->
+        <RelativeLayout
+            android:id="@+id/btnBackContainer"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="0dp"
+            android:padding="0dp">
+
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="33dp"
+                android:layout_height="34dp"
+                android:src="@drawable/ic_back"
+                android:tint="#FFFFFF" />
+        </RelativeLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,22 +52,15 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/btnBack"
-            android:layout_width="29dp"
-            android:layout_height="26dp"
-            android:src="@drawable/ic_back"
-            android:tint="#FFFFFF" />
-
     </RelativeLayout>
 
+    <!-- CONTENT -->
     <ScrollView
         android:id="@+id/scrollArea"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_below="@id/headerDetail"
         android:layout_above="@+id/btnPesan"
-        android:layout_below="@id/headerDetail">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:orientation="vertical"
@@ -63,15 +68,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- Gambar Thumbnail -->
             <ImageView
                 android:id="@+id/imgThumbnail"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_marginTop="16dp"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                android:background="#EEE" />
 
-            <!-- Judul -->
             <TextView
                 android:id="@+id/txtTitle"
                 android:layout_width="match_parent"
@@ -79,49 +82,46 @@
                 android:text="Judul Kursus"
                 android:textSize="22sp"
                 android:textStyle="bold"
-                android:paddingTop="12dp" />
+                android:layout_marginTop="12dp"/>
 
-            <!-- Tutor -->
             <TextView
                 android:id="@+id/txtTutor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tutor Profesional"
                 android:textSize="16sp"
-                android:paddingTop="4dp" />
+                android:layout_marginTop="6dp"/>
 
-            <!-- Foto Tutor -->
             <ImageView
                 android:id="@+id/imgTutor"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
-                android:layout_marginTop="16dp"
-                android:scaleType="centerCrop" />
+                android:layout_marginTop="12dp"
+                android:scaleType="centerCrop"/>
 
-            <!-- Deskripsi -->
             <TextView
                 android:id="@+id/txtDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="16dp"
-                android:textSize="15sp"
-                android:text="Deskripsi kursus tampil di sini..." />
-
+                android:layout_marginTop="12dp"
+                android:text="Deskripsi kursus..."
+                android:textSize="15sp"/>
         </LinearLayout>
-
     </ScrollView>
 
-    <!-- =================== BUTTON PESAN =================== -->
     <Button
         android:id="@+id/btnPesan"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_width="251dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="120dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginRight="120dp"
+        android:layout_marginBottom="11dp"
         android:backgroundTint="#2196F3"
         android:text="Pesan Sekarang"
         android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
-        android:elevation="6dp" />
-
+        android:textSize="16sp" />
 </RelativeLayout>

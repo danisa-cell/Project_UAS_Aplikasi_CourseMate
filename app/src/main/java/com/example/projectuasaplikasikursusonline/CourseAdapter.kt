@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
+
 class CourseAdapter(
     private var courseList: List<Course>,
     private val onItemClick: (Course) -> Unit
@@ -33,7 +34,6 @@ class CourseAdapter(
         holder.txtTitle.text = item.title
         holder.txtPrice.text = item.price
 
-        // Tombol ke Detail
         holder.btnDetail.setOnClickListener {
             onItemClick(item)
         }
