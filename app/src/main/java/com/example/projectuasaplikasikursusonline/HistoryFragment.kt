@@ -62,6 +62,12 @@ class HistoryFragment : Fragment() {
                 date = "Tanggal : 05 Juni 2025",
                 status = "Status : Kadaluarsa",
                 image = R.drawable.ic_web
+            ),
+            HistoryModel(
+                title = "Kursus : Networking",
+                date = "Tanggal : 03 Juni 2025",
+                status = "Status : Kadaluarsa",
+                image = R.drawable.ic_network
             )
         )
 

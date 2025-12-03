@@ -181,6 +181,7 @@ class HomeFragment : Fragment() {
             R.drawable.tutor_unity,
             "Kelas ini mengajarkan dasar pembuatan game menggunakan Unity. Kamu belajar scene, object, script C#, dan animasi. Selain itu, materi mencakup pembuatan gameplay dan UI. Cocok untuk pemula yang ingin membuat game sendiri."
         )
+
     )
 
     override fun onCreateView(
