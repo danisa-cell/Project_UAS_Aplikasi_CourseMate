@@ -50,7 +50,7 @@
         android:id="@+id/btnDetail"
         android:layout_width="wrap_content"
         android:layout_height="38dp"
-        android:backgroundTint="#2196F3"
+        android:backgroundTint="#3A3A4D"
         android:text="Detail"
         android:textColor="#FFF" />
 </LinearLayout>
