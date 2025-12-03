@@ -34,10 +34,22 @@ class HistoryFragment : Fragment() {
                 image = R.drawable.ic_java
             ),
             HistoryModel(
+                title = "Kursus : Figma",
+                date = "Tanggal : 11 November 2025",
+                status = "Status : Menunggu pembayaran",
+                image = R.drawable.ic_figma
+            ),
+            HistoryModel(
                 title = "Kursus : UI/UX Design",
                 date = "Tanggal : 12 November 2025",
                 status = "Status : Berhasil",
                 image = R.drawable.ic_uiux
+            ),
+            HistoryModel(
+                title = "Kursus : Cyber Security",
+                date = "Tanggal : 20 September 2025",
+                status = "Status : Berhasil",
+                image = R.drawable.ic_cyber
             ),
             HistoryModel(
                 title = "Kursus : Python",
