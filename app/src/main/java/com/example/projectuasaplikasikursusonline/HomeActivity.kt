@@ -25,7 +25,7 @@ class HomeActivity : AppCompatActivity() {
         // Sinkronkan BottomNav dengan Navigation Component
         bottomNav.setupWithNavController(navController)
 
-        // 🔥 SEMBUNYIKAN BottomNav SAAT DI Fragment TERTENTU
+        // SEMBUNYIKAN BottomNav SAAT DI Fragment TERTENTU
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
 
