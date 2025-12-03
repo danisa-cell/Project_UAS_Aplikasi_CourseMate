@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 class HistoryAdapter(
     private val items: List<HistoryModel>
 ) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
-
+ // tes kontribusi
     class HistoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val img = view.findViewById<ImageView>(R.id.imgHistory)
         val title = view.findViewById<TextView>(R.id.txtTitle)
