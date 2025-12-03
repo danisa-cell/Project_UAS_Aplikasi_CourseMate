@@ -4,39 +4,72 @@
     android:id="@+id/home_graph"
     app:startDestination="@id/homeFragment">
 
+    <!-- HOME -->
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.projectuasaplikasikursusonline.HomeFragment"
         android:label="Home">
+
         <action
             android:id="@+id/action_homeFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
+
     </fragment>
 
+
+    <!-- DETAIL -->
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.example.projectuasaplikasikursusonline.DetailFragment"
         android:label="Detail">
+
         <argument android:name="title" app:argType="string" />
         <argument android:name="price" app:argType="string" />
         <argument android:name="imageRes" app:argType="integer" />
         <argument android:name="tutorName" app:argType="string" />
         <argument android:name="tutorImage" app:argType="integer" />
         <argument android:name="description" app:argType="string" />
+
+        <!-- Tambahkan action ke payment -->
+        <action
+            android:id="@+id/action_detailFragment_to_paymentFragment"
+            app:destination="@id/paymentFragment" />
+
     </fragment>
 
+
+    <!-- PAYMENT (BARU) -->
+    <fragment
+        android:id="@+id/paymentFragment"
+        android:name="com.example.projectuasaplikasikursusonline.PaymentFragment"
+        android:label="Order">
+
+        <argument android:name="title" app:argType="string" />
+        <argument android:name="price" app:argType="string" />
+        <argument android:name="tutor" app:argType="string" />
+        <argument android:name="imageRes" app:argType="integer" />
+
+    </fragment>
+
+
+    <!-- HISTORY -->
     <fragment
         android:id="@+id/historyFragment"
         android:name="com.example.projectuasaplikasikursusonline.HistoryFragment"
         android:label="History" />
 
+
+    <!-- MY COURSE -->
     <fragment
         android:id="@+id/courseFragment"
         android:name="com.example.projectuasaplikasikursusonline.CourseFragment"
         android:label="MyCourse" />
 
+
+    <!-- PROFILE -->
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.projectuasaplikasikursusonline.ProfileFragment"
         android:label="Profile" />
+
 </navigation>
