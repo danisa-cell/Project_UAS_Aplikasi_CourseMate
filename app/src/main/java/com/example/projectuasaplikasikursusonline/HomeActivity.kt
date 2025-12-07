@@ -19,18 +19,21 @@ class HomeActivity : AppCompatActivity() {
 
         val navController = navHostFragment.navController
 
-        // ID harus sesuai dengan XML
+        // Ambil BottomNavigationView
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
         // Sinkronkan BottomNav dengan Navigation Component
         bottomNav.setupWithNavController(navController)
 
-        // 🔥 SEMBUNYIKAN BottomNav SAAT DI DetailFragment
+        // SEMBUNYIKAN BottomNav SAAT DI Fragment TERTENTU
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.detailFragment -> {
-                    bottomNav.visibility = View.GONE   // Hilang saat buka detail
+
+                R.id.detailFragment,
+                R.id.paymentFragment -> {
+                    bottomNav.visibility = View.GONE // Hilang di detail & payment
                 }
+
                 else -> {
                     bottomNav.visibility = View.VISIBLE // Muncul di fragment lain
                 }
