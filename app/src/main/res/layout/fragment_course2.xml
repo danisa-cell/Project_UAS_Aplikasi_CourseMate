@@ -76,9 +76,9 @@
             android:layout_centerVertical="true" />
     </RelativeLayout>
 
-    <!-- RECYCLER VIEW (ID SUDAH BETUL) -->
+    <!-- RECYCLER VIEW (SUDAH SESUAI DENGAN KODE KOTLIN) -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvMycourse"
+        android:id="@+id/rvMyCourse"
         android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

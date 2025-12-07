@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp"
+    android:background="@drawable/bgquiz">
+
+    <TextView
+        android:id="@+id/tvScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nilai Kamu: 0"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:padding="16dp" />
+
+    <TextView
+        android:id="@+id/tvDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Detail"
+        android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:paddingTop="12dp" />
+
+    <!-- ULANGI -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnRetry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ulangi Quiz"
+        android:padding="12dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/button_style"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="@null"/>
+
+    <!-- FINISH -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnFinish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Finish"
+        android:padding="12dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/button_style"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="@null"/>
+
+</LinearLayout>

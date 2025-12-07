@@ -8,7 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class MycourseAdapter(
-    private val list: List<MycourseModel>
+    private val list: List<MycourseModel>,
+    private val onClick: (MycourseModel) -> Unit      // ← DITAMBAHKAN
 ) : RecyclerView.Adapter<MycourseAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -29,6 +30,11 @@ class MycourseAdapter(
         holder.tvTitle.text = item.title
         holder.tvProgress.text = "${item.progress}%"
         holder.btnStart.text = if (item.progress == 0) "Start" else "Next"
+
+        // ------------- PENTING: EVENT KLIK ---------------- //
+        holder.btnStart.setOnClickListener {
+            onClick(item)     // ← panggil callback
+        }
     }
 
     override fun getItemCount(): Int = list.size
