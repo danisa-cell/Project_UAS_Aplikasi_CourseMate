@@ -1,10 +1,14 @@
 package com.example.projectuasaplikasikursusonline
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 
 class QuizActivity : AppCompatActivity() {
+
+    private val TAG = "QuizActivity"
 
     private var index = 0
     private var score = 0
@@ -20,11 +24,19 @@ class QuizActivity : AppCompatActivity() {
     private lateinit var opt5: RadioButton
 
     private lateinit var btnNext: Button
+    private lateinit var btnBack: ImageView   // ✅ tombol back
+
+    private val questionList = QuizData.questions.shuffled()
+    private val userAnswers = mutableListOf<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz)
 
+        Log.d(TAG, "=== QuizActivity START ===")
+        Log.d(TAG, "Total questions: ${questionList.size}")
+
+        // Init view
         tvNumber = findViewById(R.id.tvNumber)
         tvQuestion = findViewById(R.id.tvQuestion)
         rgOptions = findViewById(R.id.rgOptions)
@@ -37,6 +49,12 @@ class QuizActivity : AppCompatActivity() {
 
         btnNext = findViewById(R.id.btnNext)
 
+        // ✅ Init tombol back
+        btnBack = findViewById(R.id.btnBack)
+        btnBack.setOnClickListener {
+            finish()  // balik ke activity sebelumnya
+        }
+
         loadQuestion()
 
         btnNext.setOnClickListener {
@@ -45,12 +63,11 @@ class QuizActivity : AppCompatActivity() {
     }
 
     private fun loadQuestion() {
-        val q = QuizData.questions[index]
+        val q = questionList[index]
 
-        tvNumber.text = "Soal ${index + 1} dari ${QuizData.questions.size}"
+        tvNumber.text = "Soal ${index + 1} dari ${questionList.size}"
         tvQuestion.text = q.question
 
-        // Asumsikan options berisi 5 item
         opt1.text = q.options[0]
         opt2.text = q.options[1]
         opt3.text = q.options[2]
@@ -58,11 +75,11 @@ class QuizActivity : AppCompatActivity() {
         opt5.text = q.options[4]
 
         rgOptions.clearCheck()
+
+        btnNext.text = if (index == questionList.lastIndex) "Hasil Quiz" else "Next"
     }
 
     private fun checkAnswer() {
-        val q = QuizData.questions[index]
-
         val chosen = when (rgOptions.checkedRadioButtonId) {
             R.id.opt1 -> 0
             R.id.opt2 -> 1
@@ -77,14 +94,27 @@ class QuizActivity : AppCompatActivity() {
             return
         }
 
-        if (chosen == q.correctIndex) score++
+        userAnswers.add(chosen)
 
-        if (index < QuizData.questions.size - 1) {
+        val correct = questionList[index].correctIndex
+        if (chosen == correct) score++
+
+        if (index < questionList.size - 1) {
             index++
             loadQuestion()
         } else {
-            Toast.makeText(this, "Quiz selesai! Skor kamu: $score", Toast.LENGTH_LONG).show()
-            finish()
+            navigateToResult()
         }
+    }
+
+    private fun navigateToResult() {
+        val intent = Intent(this, ResultActivity::class.java)
+        intent.putExtra("score", score)
+        intent.putExtra("total", questionList.size)
+        intent.putExtra("questions", ArrayList(questionList))
+        intent.putExtra("userAnswers", ArrayList(userAnswers))
+
+        startActivity(intent)
+        finish()
     }
 }

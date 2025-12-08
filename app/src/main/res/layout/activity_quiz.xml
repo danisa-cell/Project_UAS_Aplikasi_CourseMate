@@ -1,9 +1,11 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#121212">
 
     <!-- HEADER -->
     <RelativeLayout
@@ -17,7 +19,8 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:src="@drawable/ic_back"
-            android:tint="#FFFFFF" />
+            android:contentDescription="Back"
+            app:tint="#FFFFFF" />
 
         <LinearLayout
             android:orientation="vertical"
@@ -30,7 +33,8 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/ic_headergraduation"
-                android:tint="#FFFFFF" />
+                android:contentDescription="Header Icon"
+                app:tint="#FFFFFF" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -49,6 +53,7 @@
         android:text="Soal 1 dari 5"
         android:textSize="14sp"
         android:layout_marginTop="16dp"
+        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
@@ -58,54 +63,62 @@
         android:textSize="16sp"
         android:textStyle="bold"
         android:layout_marginTop="12dp"
+        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <!-- OPSI (RADIO) -->
+    <!-- OPSI -->
     <RadioGroup
         android:id="@+id/rgOptions"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:padding="4dp"
         android:layout_marginTop="12dp">
 
         <RadioButton
             android:id="@+id/opt1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"/>
 
         <RadioButton
             android:id="@+id/opt2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"/>
 
         <RadioButton
             android:id="@+id/opt3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"/>
 
         <RadioButton
             android:id="@+id/opt4"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"/>
 
         <RadioButton
             android:id="@+id/opt5"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"/>
 
     </RadioGroup>
-
 
     <!-- NEXT BUTTON -->
     <Button
         android:id="@+id/btnNext"
         android:text="Next"
         android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
         android:layout_gravity="center"
         android:layout_width="150dp"
         android:layout_height="48dp"
         android:textStyle="bold"
+        android:textColor="#FFFFFF"
         android:background="@drawable/bg_button_next"/>
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -23,7 +24,8 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:src="@drawable/ic_headergraduation"
-                android:tint="#FFFFFF" />
+                android:contentDescription="Header Icon"
+                app:tint="#FFFFFF" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -41,12 +43,12 @@
         android:text="Course Materials"
         android:textSize="22sp"
         android:textStyle="bold"
+        android:textColor="#000000"
         android:paddingTop="24dp"
         android:layout_marginTop="12dp"
         android:gravity="center"
-        android:layout_gravity="center_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <!-- SEARCH BOX -->
     <RelativeLayout
@@ -58,11 +60,14 @@
         android:background="@drawable/rounded_edittext"
         android:elevation="4dp">
 
+        <!-- ✅ ID diubah agar cocok dengan Kotlin -->
         <EditText
-            android:id="@+id/edtSearch"
+            android:id="@+id/etSearch"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="Search"
+            android:textColor="#000000"
+            android:textColorHint="#7E7E7E"
             android:background="@android:color/transparent"
             android:paddingStart="10dp"
             android:textSize="14sp" />
@@ -71,12 +76,13 @@
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:src="@drawable/ic_search"
-            android:tint="#7E7E7E"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"
+            android:contentDescription="Search Icon"
+            app:tint="#7E7E7E" />
     </RelativeLayout>
 
-    <!-- RECYCLER VIEW (SUDAH SESUAI DENGAN KODE KOTLIN) -->
+    <!-- RECYCLER VIEW -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMyCourse"
         android:layout_marginTop="16dp"
