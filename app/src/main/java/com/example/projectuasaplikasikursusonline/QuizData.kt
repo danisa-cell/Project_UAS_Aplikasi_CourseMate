@@ -196,5 +196,5 @@ object QuizData {
     // ==================================================
     // ⬇ Tambahan untuk menyimpan jawaban user
     // ==================================================
-    var userAnswers = mutableListOf<Int>()
+    var userAnswers = ArrayList<Int>()
 }

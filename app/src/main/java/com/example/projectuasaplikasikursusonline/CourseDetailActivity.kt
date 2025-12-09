@@ -6,11 +6,11 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.projectuasaplikasikursusonline.storage.CourseProgressStorage
 
 class CourseDetailActivity : AppCompatActivity() {
 
     private val courseDescriptions = mapOf(
-
         "Pengenalan Kotlin" to """
             Kotlin merupakan bahasa pemrograman modern yang dirancang untuk memberikan pengalaman coding yang lebih aman, bersih, ringkas, dan efisien. 
             Bahasa ini dikembangkan oleh JetBrains dan diumumkan secara resmi sebagai bahasa utama untuk Android oleh Google. 
@@ -141,10 +141,7 @@ class CourseDetailActivity : AppCompatActivity() {
 
             Dengan pemahaman OOP yang kuat, kamu dapat membangun aplikasi yang scalable dan mudah diperluas.
 
-            Banyak fitur Android seperti Activity, View, dan Fragment dibangun dengan konsep OOP, 
-            sehingga materi ini sangat penting untuk dipahami.
-
-            OOP akan membuka jalan ke materi berikutnya seperti constructor, inheritance, dan interface.
+            Banyak fitur Android seperti Activity, View, dan Fragment dibangun dengan konsep OOP.
         """.trimIndent(),
 
         "Constructor & Init" to """
@@ -158,10 +155,6 @@ class CourseDetailActivity : AppCompatActivity() {
             Kotlin juga mendukung default parameter, sehingga kamu bisa membuat constructor lebih fleksibel tanpa perlu membuat banyak versi.
 
             Kamu juga akan belajar bagaimana constructor bekerja dalam class turunan dan bagaimana cara memanggil constructor parent.
-
-            Materi ini penting untuk mempersiapkan class yang kompleks dan data-driven.
-
-            Constructor yang baik akan sangat membantu dalam pengembangan aplikasi yang besar dan dinamis.
         """.trimIndent(),
 
         "Inheritance Kotlin" to """
@@ -169,119 +162,33 @@ class CourseDetailActivity : AppCompatActivity() {
             Kotlin menggunakan keyword open agar class bisa diwariskan.
 
             Dengan inheritance, kamu dapat menggunakan kembali kode dari class induk tanpa harus menulis ulang.
-
-            Materi ini sering digunakan dalam pembuatan komponen UI, model data, hingga logika aplikasi.
-
-            Kamu juga akan belajar tentang overriding function, yaitu mengganti perilaku function di class induk.
-
-            Inheritance membantu membuat program lebih terstruktur dan modular.
-
-            Dalam proyek besar, inheritance mempermudah pembagian tanggung jawab antar class secara rapi.
-
-            Memahami inheritance akan sangat membantumu dalam memahami sistem Android yang berbasis class hierarchy.
         """.trimIndent(),
 
         "Abstract & Interface" to """
-            Abstract class adalah class yang tidak dapat dibuat objeknya secara langsung. Fungsinya adalah sebagai pola dasar bagi class lain.
-
-            Interface digunakan untuk membuat kontrak bahwa class wajib memiliki fungsi tertentu. 
-            Kotlin memungkinkan class mengimplementasikan banyak interface sekaligus.
-
-            Ini sangat berguna dalam pembuatan sistem besar dengan struktur yang kompleks.
-
-            Abstract dan interface membantu developer membuat desain aplikasi yang fleksibel dan mudah berkembang. 
-            Kamu bisa membuat class dengan kemampuan tertentu tanpa terikat pada class induk tertentu.
-
-            Materi ini juga sangat erat kaitannya dengan prinsip OOP seperti polymorphism.
-
-            Dengan menguasai konsep ini, kamu dapat membangun aplikasi dengan arsitektur yang jauh lebih profesional.
-
-            Android sendiri banyak menggunakan interface seperti OnClickListener dan Adapter interface.
+            Abstract class adalah class yang tidak dapat dibuat objeknya secara langsung.
+            Interface digunakan untuk membuat kontrak bahwa class wajib memiliki fungsi tertentu.
         """.trimIndent(),
 
         "Data Class" to """
             Data class digunakan untuk menyimpan data tanpa perlu menulis fungsi tambahan seperti toString(), equals(), atau hashCode(). 
             Kotlin secara otomatis membuatkan fungsi-fungsi tersebut untukmu.
-
-            Data class sangat penting ketika kamu bekerja dengan API, database, atau state UI.
-
-            Kamu juga bisa menggunakan copy() untuk menduplikasi object dengan perubahan kecil pada nilai tertentu.
-
-            Data class juga sangat cocok digunakan bersama dengan collection seperti List dan Map.
-
-            Pemahaman data class akan memudahkanmu dalam mengelola data secara efisien.
-
-            Banyak aplikasi modern seperti toko online, aplikasi booking, dan aplikasi berita menggunakan data class untuk memodelkan data.
-
-            Dengan materi ini, kamu akan mampu membuat struktur data yang kuat dan aman.
         """.trimIndent(),
 
         "Collection List" to """
-            List digunakan untuk menyimpan data dalam bentuk urutan. Kotlin memiliki List (immutable) dan MutableList (mutable).
-
-            List sangat berguna ketika kamu ingin menampilkan data dalam jumlah banyak seperti daftar produk, daftar menu, atau list berita.
-
-            Kotlin memberikan banyak function bawaan seperti filter, map, sortBy, reduce, dan lain-lain untuk mempermudah pengolahan data.
-
-            Kamu juga akan belajar cara menambahkan item, menghapus item, dan mengakses data berdasarkan indeks tertentu.
-
-            Collection List adalah fondasi penting dalam pembuatan aplikasi berbasis data.
-
-            Pemahaman collection akan sangat membantumu dalam membuat fitur seperti RecyclerView dan pagination.
-
-            Dengan menggunakan List secara efisien, aplikasi kamu akan berjalan lebih cepat dan responsif.
+            List digunakan untuk menyimpan data dalam bentuk urutan. 
+            Kotlin memiliki List (immutable) dan MutableList (mutable).
         """.trimIndent(),
 
         "Collection Map" to """
-            Map adalah struktur data yang menyimpan pasangan key-value. 
-            Key harus unik, sedangkan value boleh sama.
-
-            Map sangat berguna untuk data yang membutuhkan pencarian cepat berdasarkan key tertentu, 
-            seperti menyimpan konfigurasi, tabel referensi, atau data user.
-
-            Kotlin menyediakan Map dan MutableMap yang memungkinkan pengelolaan data lebih fleksibel.
-
-            Kamu juga akan belajar bagaimana menambah, menghapus, dan mengakses data menggunakan key.
-
-            Map sering digunakan dalam aplikasi yang menangani data JSON, autentikasi, atau setting aplikasi.
-
-            Pemahaman Map akan membuatmu lebih siap dalam mengolah data kompleks.
-
-            Materi ini juga sangat penting untuk memahami struktur data pada backend dan API.
+            Map adalah struktur data yang menyimpan pasangan key-value.
         """.trimIndent(),
 
         "Exception Handling" to """
-            Exception handling adalah cara untuk menangani error agar aplikasi tidak crash. 
-            Kotlin mendukung try, catch, finally, dan throw untuk menangani berbagai jenis error.
-
-            Error bisa terjadi karena banyak hal seperti input pengguna yang tidak valid, koneksi internet terputus, atau file tidak ditemukan.
-
-            Dengan menangani error dengan baik, aplikasi kamu akan jauh lebih stabil dan nyaman digunakan.
-
-            Kamu juga akan belajar tentang custom exception untuk membuat jenis error sendiri.
-
-            Penanganan error adalah salah satu indikator profesionalitas seorang developer.
-
-            Materi ini membantu kamu mempersiapkan aplikasi untuk berbagai situasi tak terduga.
-
-            Dengan pemahaman exception handling yang kuat, kamu bisa membuat aplikasi yang tidak mudah crash.
+            Exception handling adalah cara untuk menangani error agar aplikasi tidak crash.
         """.trimIndent(),
 
-        "Make app android" to """
-            Materi ini mengajarkan kamu cara membuat aplikasi Android dari nol menggunakan Kotlin. 
-            Kamu akan belajar tentang Activity, Intent, RecyclerView, Adapter, Layout XML, hingga struktur project Android.
-
-            Pembuatan aplikasi Android membutuhkan pemahaman tentang UI, event handling, navigasi halaman, dan manajemen data.
-
-            Kamu juga akan belajar bagaimana membangun halaman dengan gaya modern yang responsif.
-
-            Selain itu, kamu akan memahami cara kerja komponen penting seperti Toast, Button, EditText, dan ImageView.
-
-            Materi ini juga membahas praktik terbaik dalam membuat aplikasi yang cepat, aman, dan mudah dipelihara.
-
-            Dengan menyelesaikan materi ini, kamu sudah mampu membuat aplikasi Android sederhana hingga menengah.
-
-            Ini adalah langkah besar menuju kemampuan menjadi developer Android profesional.
+        "Make App Android" to """
+            Materi ini mengajarkan cara membuat aplikasi Android dari nol menggunakan Kotlin.
         """.trimIndent()
     )
 
@@ -297,14 +204,17 @@ class CourseDetailActivity : AppCompatActivity() {
         val btnBack = findViewById<ImageView>(R.id.btnBack)
 
         tvTitle.text = title
-
         tvDesc.text = courseDescriptions[title] ?: "Deskripsi belum tersedia."
+
+        // ✅ PERBAIKAN: Set materi progress ke 100% (sudah baca)
+        CourseProgressStorage.updateMaterialProgress(this, title, 100)
 
         btnBack.setOnClickListener { finish() }
 
+        // ✅ PERBAIKAN: Langsung ke quiz tanpa update progress dulu
         btnQuiz.setOnClickListener {
             val intent = Intent(this, QuizActivity::class.java)
-            intent.putExtra("title", title)
+            intent.putExtra("courseTitle", title)
             startActivity(intent)
         }
     }

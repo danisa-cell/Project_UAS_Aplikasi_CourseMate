@@ -9,35 +9,40 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeActivity : AppCompatActivity() {
 
+    private lateinit var bottomNav: BottomNavigationView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Ambil NavHostFragment
+        // NavHost
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-
         val navController = navHostFragment.navController
 
-        // Ambil BottomNavigationView
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-
-        // Sinkronkan BottomNav dengan Navigation Component
+        // BottomNavigationView
+        bottomNav = findViewById(R.id.bottom_navigation)
         bottomNav.setupWithNavController(navController)
 
-        // SEMBUNYIKAN BottomNav SAAT DI Fragment TERTENTU
+        // Atur fragment tertentu agar bottomNav hilang
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
 
                 R.id.detailFragment,
-                R.id.paymentFragment -> {
-                    bottomNav.visibility = View.GONE // Hilang di detail & payment
+                R.id.paymentFragment,
+                R.id.paymentSuccessFragment -> {    // tambahkan ini
+                    bottomNav.visibility = View.GONE
                 }
 
                 else -> {
-                    bottomNav.visibility = View.VISIBLE // Muncul di fragment lain
+                    bottomNav.visibility = View.VISIBLE
                 }
             }
         }
+    }
+
+    // === Fungsi umum agar fragment bisa sembunyikan/munculkan bottom nav ===
+    fun setBottomNavVisibility(isVisible: Boolean) {
+        bottomNav.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
 }

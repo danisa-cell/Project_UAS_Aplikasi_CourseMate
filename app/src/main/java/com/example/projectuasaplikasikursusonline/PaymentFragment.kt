@@ -1,97 +1,212 @@
 package com.example.projectuasaplikasikursusonline
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.fragment.app.Fragment
-import java.text.NumberFormat
-import java.util.Locale
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
+import androidx.navigation.fragment.findNavController
+import com.example.projectuasaplikasikursusonline.storage.HistoryModel
+import com.example.projectuasaplikasikursusonline.storage.HistoryStorage
+import java.text.SimpleDateFormat
+import java.util.*
 
 class PaymentFragment : Fragment() {
 
-    private var quantity = 1
-    private var price = 0
+    private lateinit var txtQty: TextView
+    private lateinit var txtSubtotal: TextView
+    private lateinit var txtTotal: TextView
+    private lateinit var txtTitle: TextView
+    private lateinit var txtPrice: TextView
+    private lateinit var txtTutor: TextView
+    private lateinit var imgCourse: ImageView
+
+    private var qty = 1
+    private var price = 150000
+
+    private var statusFinalized = false // mencegah double update
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val view = inflater.inflate(R.layout.fragment_payment, container, false)
 
-        // ===== Tombol Back =====
-        val btnBack: ImageView = view.findViewById(R.id.btnBackPayment)
-        btnBack.setOnClickListener {
-            requireActivity().onBackPressed()
-        }
+        val btnMinus = view.findViewById<ImageButton>(R.id.btnMinus)
+        val btnPlus = view.findViewById<ImageButton>(R.id.btnPlus)
+        val btnPayNow = view.findViewById<Button>(R.id.btnPayNow)
+        val btnBack = view.findViewById<ImageView>(R.id.btnBackPayment)
 
-        // ===== Ambil data dari bundle =====
-        val courseImage = arguments?.getInt("imageRes") ?: 0
+        txtQty = view.findViewById(R.id.txtQty)
+        txtSubtotal = view.findViewById(R.id.txtSubtotal)
+        txtTotal = view.findViewById(R.id.txtTotalPayment)
+        txtTitle = view.findViewById(R.id.txtPaymentTitle)
+        txtPrice = view.findViewById(R.id.txtPaymentPrice)
+        txtTutor = view.findViewById(R.id.txtPaymentTutor)
+        imgCourse = view.findViewById(R.id.imgCoursePayment)
+
+        // Ambil data dari fragment sebelumnya
         val title = arguments?.getString("title") ?: ""
+        val priceText = arguments?.getString("price") ?: "150000"
         val tutorName = arguments?.getString("tutorName") ?: ""
-        val tutorImage = arguments?.getInt("tutorImage") ?: 0
-        val priceStr = arguments?.getString("price") ?: "0"
+        val imageRes = arguments?.getInt("imageRes") ?: 0
 
-        // Bersihkan format harga "Rp 200.000"
-        price = priceStr.replace("Rp", "")
-            .replace(".", "")
-            .replace(",", "")
-            .trim()
-            .toInt()
-
-        // ===== Hubungkan UI =====
-        val imgCourse: ImageView = view.findViewById(R.id.imgCoursePayment)
-        val txtTitle: TextView = view.findViewById(R.id.txtPaymentTitle)
-        val txtTutor: TextView = view.findViewById(R.id.txtPaymentTutor)
-        val txtPrice: TextView = view.findViewById(R.id.txtPaymentPrice)
-
-        val txtQty: TextView = view.findViewById(R.id.txtQty)
-        val btnPlus: ImageButton = view.findViewById(R.id.btnPlus)
-        val btnMinus: ImageButton = view.findViewById(R.id.btnMinus)
-
-        val txtSubtotal: TextView = view.findViewById(R.id.txtSubtotal)
-        val txtTotal: TextView = view.findViewById(R.id.txtTotalPayment)
-
-        // Set course data
-        imgCourse.setImageResource(courseImage)
         txtTitle.text = title
         txtTutor.text = tutorName
-        txtPrice.text = formatRupiah(price)
 
-        // ===== Fungsi update harga =====
-        fun updatePrice() {
-            val subtotal = quantity * price
+        price = priceText.replace("Rp", "")
+            .replace(".", "")
+            .replace(" ", "")
+            .toIntOrNull() ?: 150000
 
-            txtSubtotal.text = formatRupiah(subtotal)
-            txtTotal.text = formatRupiah(subtotal)
-            txtQty.text = quantity.toString()
-        }
+        txtPrice.text = "Rp. ${formatRupiah(price)}"
+        if (imageRes != 0) imgCourse.setImageResource(imageRes)
 
         updatePrice()
 
-        // ===== Tombol + =====
+        // ==============================================
+        // BUAT HISTORY PERTAMA: MENUNGGU PEMBAYARAN
+        // ==============================================
+        HistoryStorage.addHistory(
+            requireContext(),
+            HistoryModel(
+                title = "Kursus : $title",
+                date = "Tanggal : ${getTodayDate()}",
+                status = "Status : menunggu pembayaran",
+                image = imageRes
+            )
+        )
+
+        // Tombol qty
+        btnMinus.setOnClickListener {
+            if (qty > 1) {
+                qty--
+                updatePrice()
+            }
+        }
+
         btnPlus.setOnClickListener {
-            quantity++
+            qty++
             updatePrice()
         }
 
-        // ===== Tombol - (minimal 1) =====
-        btnMinus.setOnClickListener {
-            if (quantity > 1) {
-                quantity--
-                updatePrice()
-            }
+        // Tombol back → dianggap batal
+        btnBack.setOnClickListener {
+            setKadaluarsa()
+            findNavController().navigateUp()
+        }
+
+        btnPayNow.setOnClickListener {
+            showPaymentOptions()
         }
 
         return view
     }
 
-    // ===== Format Rupiah =====
+    private fun updatePrice() {
+        val total = qty * price
+        txtQty.text = qty.toString()
+        txtSubtotal.text = "Rp. ${formatRupiah(total)}"
+        txtTotal.text = "Rp. ${formatRupiah(total)}"
+    }
+
     private fun formatRupiah(value: Int): String {
-        val formatter = NumberFormat.getCurrencyInstance(Locale("in", "ID"))
-        return formatter.format(value).replace(",00", "")
+        return String.format("%,d", value).replace(',', '.')
+    }
+
+    private fun showPaymentOptions() {
+        val options = arrayOf(
+            "Bayar langsung ke tutor",
+            "Transfer ke admin (WhatsApp)"
+        )
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Pilih Metode Pembayaran")
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> bayarKeTutor()
+                    1 -> bayarViaWhatsApp()
+                }
+            }
+            .show()
+    }
+
+    private fun bayarKeTutor() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Pembayaran")
+            .setMessage("Silakan lakukan pembayaran langsung ke tutor.")
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+
+                setBerhasil()
+
+                findNavController().navigate(R.id.paymentSuccessFragment)
+            }
+            .show()
+    }
+
+    private fun bayarViaWhatsApp() {
+
+        setPembayaranAdmin()
+
+        val phoneNumber = "6285380347744"
+        val message = "Halo admin, saya ingin transfer pembayaran kursus."
+        val url = "https://wa.me/$phoneNumber?text=${Uri.encode(message)}"
+
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(requireContext(), "WhatsApp tidak terpasang", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // ============================
+    // STATUS HANDLER
+    // ============================
+
+    private fun setBerhasil() {
+        if (statusFinalized) return
+        statusFinalized = true
+
+        HistoryStorage.updateLastStatus(
+            requireContext(),
+            "Status : berhasil"
+        )
+    }
+
+    private fun setPembayaranAdmin() {
+        if (statusFinalized) return
+        statusFinalized = true
+
+        HistoryStorage.updateLastStatus(
+            requireContext(),
+            "Status : pembayaran via admin"
+        )
+    }
+
+    private fun setKadaluarsa() {
+        if (statusFinalized) return
+        statusFinalized = true
+
+        HistoryStorage.updateLastStatus(
+            requireContext(),
+            "Status : kadaluarsa"
+        )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        setKadaluarsa()
+    }
+
+    private fun getTodayDate(): String {
+        val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale("id", "ID"))
+        return dateFormat.format(Date())
     }
 }

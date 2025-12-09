@@ -2,13 +2,10 @@ package com.example.projectuasaplikasikursusonline
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 
 class QuizActivity : AppCompatActivity() {
-
-    private val TAG = "QuizActivity"
 
     private var index = 0
     private var score = 0
@@ -24,19 +21,21 @@ class QuizActivity : AppCompatActivity() {
     private lateinit var opt5: RadioButton
 
     private lateinit var btnNext: Button
-    private lateinit var btnBack: ImageView   // ✅ tombol back
+    private lateinit var btnBack: ImageView
 
     private val questionList = QuizData.questions.shuffled()
-    private val userAnswers = mutableListOf<Int>()
+    private val userAnswers = ArrayList<Int>()   // HARUS ArrayList!
+
+    private lateinit var courseId: String
+    private lateinit var courseTitle: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz)
 
-        Log.d(TAG, "=== QuizActivity START ===")
-        Log.d(TAG, "Total questions: ${questionList.size}")
+        courseId = intent.getStringExtra("courseId") ?: ""
+        courseTitle = intent.getStringExtra("courseTitle") ?: ""
 
-        // Init view
         tvNumber = findViewById(R.id.tvNumber)
         tvQuestion = findViewById(R.id.tvQuestion)
         rgOptions = findViewById(R.id.rgOptions)
@@ -48,18 +47,13 @@ class QuizActivity : AppCompatActivity() {
         opt5 = findViewById(R.id.opt5)
 
         btnNext = findViewById(R.id.btnNext)
-
-        // ✅ Init tombol back
         btnBack = findViewById(R.id.btnBack)
-        btnBack.setOnClickListener {
-            finish()  // balik ke activity sebelumnya
-        }
+
+        btnBack.setOnClickListener { finish() }
 
         loadQuestion()
 
-        btnNext.setOnClickListener {
-            checkAnswer()
-        }
+        btnNext.setOnClickListener { checkAnswer() }
     }
 
     private fun loadQuestion() {
@@ -90,14 +84,13 @@ class QuizActivity : AppCompatActivity() {
         }
 
         if (chosen == -1) {
-            Toast.makeText(this, "Pilih salah satu jawaban!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Pilih jawaban terlebih dahulu!", Toast.LENGTH_SHORT).show()
             return
         }
 
         userAnswers.add(chosen)
 
-        val correct = questionList[index].correctIndex
-        if (chosen == correct) score++
+        if (chosen == questionList[index].correctIndex) score++
 
         if (index < questionList.size - 1) {
             index++
@@ -108,11 +101,17 @@ class QuizActivity : AppCompatActivity() {
     }
 
     private fun navigateToResult() {
+
         val intent = Intent(this, ResultActivity::class.java)
         intent.putExtra("score", score)
         intent.putExtra("total", questionList.size)
-        intent.putExtra("questions", ArrayList(questionList))
-        intent.putExtra("userAnswers", ArrayList(userAnswers))
+
+        // WAJIB
+        intent.putExtra("questions", ArrayList(questionList))   // FIX
+        intent.putExtra("userAnswers", userAnswers)             // FIX
+
+        intent.putExtra("courseId", courseId)
+        intent.putExtra("courseTitle", courseTitle)
 
         startActivity(intent)
         finish()

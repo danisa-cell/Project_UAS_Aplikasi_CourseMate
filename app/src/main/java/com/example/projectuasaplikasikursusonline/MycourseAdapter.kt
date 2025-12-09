@@ -8,9 +8,10 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.projectuasaplikasikursusonline.storage.CourseProgressStorage
 
 class MycourseAdapter(
-    private var list: List<MycourseModel>,   // ✅ jadi var
+    private var list: List<MycourseModel>,
     private val onClick: (MycourseModel) -> Unit
 ) : RecyclerView.Adapter<MycourseAdapter.ViewHolder>() {
 
@@ -30,12 +31,19 @@ class MycourseAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
+        val context = holder.itemView.context
+
+        // ✅ Ambil progress dari storage pakai TITLE
+        val totalProgress = CourseProgressStorage.getTotalProgress(
+            context,
+            item.title  // ← PENTING: Pakai title, bukan id
+        )
 
         holder.tvTitle.text = item.title
-        holder.tvProgress.text = "${item.progress}%"
-        holder.progressBar.progress = item.progress
-
         holder.img.setImageResource(item.imageRes)
+
+        holder.tvProgress.text = "$totalProgress%"
+        holder.progressBar.progress = totalProgress
 
         holder.btnNext.setOnClickListener {
             onClick(item)
@@ -44,7 +52,6 @@ class MycourseAdapter(
 
     override fun getItemCount(): Int = list.size
 
-    // ✅ fungsi buat update data saat search
     fun updateList(newList: List<MycourseModel>) {
         list = newList
         notifyDataSetChanged()

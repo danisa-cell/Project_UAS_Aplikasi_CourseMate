@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -8,46 +10,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjectUASAplikasiKursusOnline">
 
-        <!-- LOGIN SEBAGAI LAUNCHER -->
         <activity
             android:name=".LoginActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
-        <!-- MAIN ACTIVITIES -->
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".HomeActivity"
-            android:exported="false" />
-
-        <!-- COURSE & QUIZ -->
-        <activity
-            android:name=".CourseDetailActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".QuizActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".ResultActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".FinishActivity"
-            android:exported="false" />
-
-        <!-- KALAU PUNYA FinishScreenActivity JUGA, TETAP ADA -->
-        <activity
-            android:name=".FinishScreenActivity"
-            android:exported="false" />
+        <activity android:name=".MainActivity" android:exported="false"/>
+        <activity android:name=".HomeActivity" android:exported="false"/>
+        <activity android:name=".CourseDetailActivity" android:exported="false"/>
+        <activity android:name=".QuizActivity" android:exported="false"/>
+        <activity android:name=".ResultActivity" android:exported="false"/>
+        <activity android:name=".FinishActivity" android:exported="false"/>
+        <activity android:name=".FinishScreenActivity" android:exported="false"/>
 
     </application>
 

@@ -2,9 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="8dp">
 
-    <!-- Bagian isi item -->
+    <!-- Container utama item -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -12,6 +13,7 @@
         android:padding="12dp"
         android:gravity="center_vertical">
 
+        <!-- Gambar -->
         <ImageView
             android:id="@+id/imgHistory"
             android:layout_width="70dp"
@@ -19,11 +21,14 @@
             android:src="@drawable/ic_history"
             android:layout_marginEnd="12dp" />
 
+        <!-- Container teks -->
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
+            <!-- Judul -->
             <TextView
                 android:id="@+id/txtTitle"
                 android:layout_width="wrap_content"
@@ -31,8 +36,9 @@
                 android:text="Kursus"
                 android:textColor="#000"
                 android:textStyle="bold"
-                android:textSize="16sp" /> <!-- diperbesar -->
+                android:textSize="16sp" />
 
+            <!-- Tanggal -->
             <TextView
                 android:id="@+id/txtDate"
                 android:layout_width="wrap_content"
@@ -42,6 +48,7 @@
                 android:textSize="14sp"
                 android:layout_marginTop="4dp" />
 
+            <!-- Status -->
             <TextView
                 android:id="@+id/txtStatus"
                 android:layout_width="wrap_content"
@@ -49,8 +56,11 @@
                 android:text="Status"
                 android:textColor="#000"
                 android:textSize="14sp"
-                android:layout_marginTop="2dp" />
+                android:padding="4dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_status" />
         </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

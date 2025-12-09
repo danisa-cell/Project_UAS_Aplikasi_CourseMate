@@ -13,7 +13,6 @@
         <action
             android:id="@+id/action_homeFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
-
     </fragment>
 
 
@@ -30,15 +29,13 @@
         <argument android:name="tutorImage" app:argType="integer" />
         <argument android:name="description" app:argType="string" />
 
-        <!-- Tambahkan action ke payment -->
         <action
             android:id="@+id/action_detailFragment_to_paymentFragment"
             app:destination="@id/paymentFragment" />
-
     </fragment>
 
 
-    <!-- PAYMENT (BARU) -->
+    <!-- PAYMENT -->
     <fragment
         android:id="@+id/paymentFragment"
         android:name="com.example.projectuasaplikasikursusonline.PaymentFragment"
@@ -49,7 +46,18 @@
         <argument android:name="tutor" app:argType="string" />
         <argument android:name="imageRes" app:argType="integer" />
 
+        <!-- 🔥 Action yang WAJIB ada -->
+        <action
+            android:id="@+id/action_paymentFragment_to_paymentSuccessFragment"
+            app:destination="@id/paymentSuccessFragment" />
     </fragment>
+
+
+    <fragment
+        android:id="@+id/paymentSuccessFragment"
+        android:name="com.example.projectuasaplikasikursusonline.fragment.PaymentSuccessFragment"
+        android:label="Pembayaran Berhasil" />
+
 
 
     <!-- HISTORY -->
@@ -71,5 +79,4 @@
         android:id="@+id/profileFragment"
         android:name="com.example.projectuasaplikasikursusonline.ProfileFragment"
         android:label="Profile" />
-
 </navigation>

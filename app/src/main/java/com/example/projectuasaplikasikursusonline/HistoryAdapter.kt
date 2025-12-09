@@ -6,9 +6,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.projectuasaplikasikursusonline.storage.HistoryModel
 
 class HistoryAdapter(
-private val items: List<HistoryModel>
+    private val items: List<HistoryModel>
 ) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
 
     class HistoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -32,30 +33,29 @@ private val items: List<HistoryModel>
         holder.date.text = item.date
         holder.status.text = item.status
 
-        // Ambil status sebenarnya tanpa "Status :"
         val cleanStatus = item.status
             .replace("Status", "")
             .replace(":", "")
             .trim()
             .lowercase()
 
-        // ====== SET WARNA STATUS ======
         when (cleanStatus) {
             "berhasil" -> holder.status.setTextColor(
                 holder.itemView.context.getColor(R.color.green)
             )
-
             "menunggu pembayaran" -> holder.status.setTextColor(
                 holder.itemView.context.getColor(R.color.yellow)
             )
-
             "kadaluarsa" -> holder.status.setTextColor(
                 holder.itemView.context.getColor(R.color.red)
             )
-
+            "pembayaran via admin" -> holder.status.setTextColor(
+                holder.itemView.context.getColor(R.color.blue_dark) // warna biru tua
+            )
             else -> holder.status.setTextColor(
                 holder.itemView.context.getColor(R.color.black)
             )
+
         }
     }
 
