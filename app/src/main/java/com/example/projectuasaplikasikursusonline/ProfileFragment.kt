@@ -12,6 +12,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.text.InputType
 import androidx.appcompat.app.AppCompatActivity
+import com.example.projectuasaplikasikursusonline.R
 
 class ProfileFragment : Fragment() {
 

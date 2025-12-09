@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projectuasaplikasikursusonline.storage.CourseProgressStorage
+import com.example.projectuasaplikasikursusonline.R
 
 class FinishActivity : AppCompatActivity() {
 
@@ -26,29 +27,58 @@ class FinishActivity : AppCompatActivity() {
             val questions = (intent.getSerializableExtra("questions") as? ArrayList<Quiz>) ?: arrayListOf()
             val courseId = intent.getStringExtra("courseId") ?: ""
 
-            Log.d(TAG, "Received - Score: $score, Total: $total, courseId=$courseId")
+            Log.d(TAG, "Received - Score: $score, Total: $total, courseId='$courseId'")
 
             val tvScore = findViewById<TextView>(R.id.tvScore)
+            val tvProgressInfo = findViewById<TextView>(R.id.tvProgressInfo) // ✅ TAMBAHAN
             val container = findViewById<LinearLayout>(R.id.containerAnswers)
             val btnBack = findViewById<Button>(R.id.btnBack)
 
-            val percentage = if (total > 0) {
+            // ✅ HITUNG PERCENTAGE QUIZ
+            val quizPercentage = if (total > 0) {
                 (score.toDouble() / total * 100).toInt()
             } else 0
 
-            // 🔥 UPDATE PROGRESS QUIZ
+            Log.d(TAG, "Quiz percentage: $quizPercentage%")
+
+            // ✅ AMBIL PROGRESS SEBELUM UPDATE
+            val progressBefore = if (courseId.isNotEmpty()) {
+                CourseProgressStorage.getTotalProgress(this, courseId)
+            } else 0
+
+            // ✅ UPDATE PROGRESS QUIZ
             if (courseId.isNotEmpty()) {
-                CourseProgressStorage.updateQuizProgress(this, courseId, percentage)
+                // Progress quiz = 50% dari nilai quiz
+                val quizProgress = (quizPercentage * 50) / 100
 
-                // ✅ Debug: Cek progress setelah disimpan
-                val totalProgress = CourseProgressStorage.getTotalProgress(this, courseId)
-                Log.d(TAG, "Quiz progress saved: $percentage%")
-                Log.d(TAG, "Total progress now: $totalProgress%")
+                CourseProgressStorage.updateQuizProgress(this, courseId, quizProgress)
 
-                Toast.makeText(this, "Progress tersimpan: $totalProgress%", Toast.LENGTH_SHORT).show()
+                // ✅ AMBIL PROGRESS SETELAH UPDATE
+                val progressAfter = CourseProgressStorage.getTotalProgress(this, courseId)
+                val progressIncrease = progressAfter - progressBefore
+
+                Log.d(TAG, "Progress Before: $progressBefore%")
+                Log.d(TAG, "Progress After: $progressAfter%")
+                Log.d(TAG, "Progress Increase: +$progressIncrease%")
+
+                // ✅ TAMPILKAN INFO PROGRESS
+                tvProgressInfo.text = """
+                    Progress Course
+                    
+                    Progress Sebelum: $progressBefore%
+                    Progress Sekarang: $progressAfter%
+                    
+                    Progress Bertambah: +$progressIncrease%
+                """.trimIndent()
+
+                Toast.makeText(this, "✅ Progress bertambah +$progressIncrease%!", Toast.LENGTH_LONG).show()
+            } else {
+                Log.e(TAG, "ERROR: courseId is empty! Progress not saved.")
+                tvProgressInfo.text = "⚠️ Error: courseId kosong!\nProgress tidak tersimpan."
+                Toast.makeText(this, "Error: courseId kosong!", Toast.LENGTH_LONG).show()
             }
 
-            tvScore.text = "Skor: $score / $total ($percentage%)"
+            tvScore.text = "Skor: $score / $total ($quizPercentage%)"
 
             container.removeAllViews()
 
@@ -98,7 +128,6 @@ class FinishActivity : AppCompatActivity() {
             }
 
             btnBack.setOnClickListener {
-                // ✅ PERBAIKAN: Kembali ke MainActivity (bukan HomeActivity)
                 val intent = Intent(this, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
                 startActivity(intent)

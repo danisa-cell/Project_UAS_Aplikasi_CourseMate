@@ -36,4 +36,19 @@ object CourseProgressStorage {
     fun getProgress(context: Context, courseId: String): Int {
         return getTotalProgress(context, courseId)
     }
+
+    // ✅ RESET PROGRESS 1 COURSE (TAMBAHKAN INI)
+    fun resetCourseProgress(context: Context, courseId: String) {
+        val prefs = context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
+        prefs.edit()
+            .remove("${courseId}_material")
+            .remove("${courseId}_quiz")
+            .apply()
+    }
+
+    // ✅ RESET SEMUA PROGRESS
+    fun resetAllProgress(context: Context) {
+        val prefs = context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
+        prefs.edit().clear().apply()
+    }
 }

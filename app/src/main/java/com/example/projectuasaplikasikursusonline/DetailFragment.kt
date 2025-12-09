@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
+import com.example.projectuasaplikasikursusonline.R
 
 class DetailFragment : Fragment() {
 

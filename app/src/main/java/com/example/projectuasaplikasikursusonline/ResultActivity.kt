@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projectuasaplikasikursusonline.storage.CourseProgressStorage
+import com.example.projectuasaplikasikursusonline.R
 
 class ResultActivity : AppCompatActivity() {
 
@@ -23,8 +24,9 @@ class ResultActivity : AppCompatActivity() {
 // ResultActivity.kt - Bagian onCreate()
         val percentage = if (total > 0) (score * 100) / total else 0
         if (courseId.isNotEmpty()) {
+            val courseId = intent.getStringExtra("courseId") ?: ""
             CourseProgressStorage.updateQuizProgress(this, courseId, percentage)
-        }
+       }
 
         val tvScore = findViewById<TextView>(R.id.tvScore)
         val container = findViewById<LinearLayout>(R.id.containerAnswers)

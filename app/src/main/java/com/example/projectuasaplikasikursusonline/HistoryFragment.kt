@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectuasaplikasikursusonline.storage.HistoryStorage
+import com.example.projectuasaplikasikursusonline.R
 
 class HistoryFragment : Fragment() {
 

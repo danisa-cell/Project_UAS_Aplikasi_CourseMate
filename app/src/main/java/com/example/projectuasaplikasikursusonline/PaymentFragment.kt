@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
 import com.example.projectuasaplikasikursusonline.storage.HistoryModel
 import com.example.projectuasaplikasikursusonline.storage.HistoryStorage
+import com.example.projectuasaplikasikursusonline.R
 import java.text.SimpleDateFormat
 import java.util.*
 

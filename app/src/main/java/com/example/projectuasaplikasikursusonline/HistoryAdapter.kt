@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectuasaplikasikursusonline.storage.HistoryModel
+import com.example.projectuasaplikasikursusonline.R
 
 class HistoryAdapter(
     private val items: List<HistoryModel>

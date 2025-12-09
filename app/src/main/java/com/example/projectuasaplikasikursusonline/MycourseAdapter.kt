@@ -9,6 +9,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectuasaplikasikursusonline.storage.CourseProgressStorage
+import com.example.projectuasaplikasikursusonline.R
 
 class MycourseAdapter(
     private var list: List<MycourseModel>,
@@ -36,7 +37,8 @@ class MycourseAdapter(
         // ✅ Ambil progress dari storage pakai TITLE
         val totalProgress = CourseProgressStorage.getTotalProgress(
             context,
-            item.title  // ← PENTING: Pakai title, bukan id
+            item.title // ← PENTING: Pakai title, bukan id
+
         )
 
         holder.tvTitle.text = item.title
