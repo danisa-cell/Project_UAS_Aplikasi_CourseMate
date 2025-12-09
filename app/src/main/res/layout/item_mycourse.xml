@@ -10,7 +10,7 @@
     <!-- Sesuaikan ID dengan adapter -->
     <ImageView
         android:id="@+id/imgCourse"
-        android:src="@drawable/ic_course"
+        android:src="@drawable/ic_kotlin"
         android:layout_width="50dp"
         android:layout_height="50dp" />
 
@@ -46,7 +46,7 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:progress="30"
             android:max="100"
-            android:progressTint="#3A3A4D"/>
+            android:progressTint="#A32048"/>
     </LinearLayout>
 
     <Button

@@ -39,7 +39,7 @@ class CourseFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         loadData()
-        refreshCourseProgress()   // 🔥 ambil progress dari SharedPreferences
+        refreshCourseProgress()
 
         adapter = MycourseAdapter(listCourse) { selected ->
             val intent = Intent(requireContext(), CourseDetailActivity::class.java)
@@ -68,16 +68,14 @@ class CourseFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        refreshCourseProgress()   // 🔥 Update progress ketika kembali ke fragment
+        refreshCourseProgress()
         adapter.notifyDataSetChanged()
     }
 
-    // ---------------------------------------------------------
-    // 🔥 Ambil ulang progress dari SharedPreferences
-    // ---------------------------------------------------------
     private fun refreshCourseProgress() {
         listCourse.forEach { course ->
-            val p = CourseProgressStorage.getProgress(requireContext(), course.id)
+            // 🔥 PAKAI TITLE (bukan id)
+            val p = CourseProgressStorage.getProgress(requireContext(), course.title)
             course.progress = p
         }
     }
@@ -99,7 +97,7 @@ class CourseFragment : Fragment() {
                 if (selectedCourses.isEmpty()) {
                     Toast.makeText(requireContext(), "Tidak ada course yang dipilih", Toast.LENGTH_SHORT).show()
                 } else {
-                    resetSelectedCourses(selectedCourses)
+                    showResetSelectedConfirmation(selectedCourses)
                 }
             }
             .setNeutralButton("Reset Semua") { _, _ ->
@@ -109,10 +107,21 @@ class CourseFragment : Fragment() {
             .show()
     }
 
+    private fun showResetSelectedConfirmation(courses: List<MycourseModel>) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Konfirmasi Reset")
+            .setMessage("Apakah Anda yakin ingin mereset ${courses.size} course yang dipilih?")
+            .setPositiveButton("Ya, Reset") { _, _ ->
+                resetSelectedCourses(courses)
+            }
+            .setNegativeButton("Batal", null)
+            .show()
+    }
+
     private fun showResetAllConfirmation() {
         AlertDialog.Builder(requireContext())
             .setTitle("Reset Semua Progress")
-            .setMessage("Yakin ingin mereset SEMUA progress? Tindakan ini tidak bisa dibatalkan.")
+            .setMessage("Apakah Anda yakin ingin mereset semua progress? Semua kemajuan belajar Anda akan hilang.")
             .setPositiveButton("Ya, Reset Semua") { _, _ ->
                 resetAllProgress()
             }
@@ -120,24 +129,25 @@ class CourseFragment : Fragment() {
             .show()
     }
 
-    // 🔧 Reset 1 atau beberapa course
     private fun resetSelectedCourses(courses: List<MycourseModel>) {
+        // 🔥 PAKAI TITLE (bukan id)
         courses.forEach { course ->
-            CourseProgressStorage.resetCourseProgress(requireContext(), course.id)
+            CourseProgressStorage.resetCourseProgress(requireContext(), course.title)
         }
 
-        refreshCourseProgress()       // 🔥 Update data setelah reset
+        // Refresh UI
+        refreshCourseProgress()
         adapter.notifyDataSetChanged()
 
         Toast.makeText(requireContext(),
             "${courses.size} course berhasil direset", Toast.LENGTH_SHORT).show()
     }
 
-    // 🔧 Reset semua
     private fun resetAllProgress() {
         CourseProgressStorage.resetAllProgress(requireContext())
 
-        refreshCourseProgress()       // 🔥 Update data setelah reset
+        // Refresh UI
+        refreshCourseProgress()
         adapter.notifyDataSetChanged()
 
         Toast.makeText(requireContext(),
@@ -160,7 +170,7 @@ class CourseFragment : Fragment() {
 
     private fun loadData() {
         listCourse = arrayListOf(
-            MycourseModel("course_1", "Pengenalan Kotlin", R.drawable.ic_course),
+            MycourseModel("course_1", "Pengenalan Kotlin", R.drawable.ic_kotlin),
             MycourseModel("course_2", "Tipe Data & Variabel", R.drawable.ic_tipedata),
             MycourseModel("course_3", "Operator & Expression", R.drawable.ic_operator),
             MycourseModel("course_4", "Percabangan (If/Else)", R.drawable.ic_percabangan),

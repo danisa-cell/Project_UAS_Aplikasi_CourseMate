@@ -5,7 +5,7 @@
     android:padding="16dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#121212">
+    android:background="@drawable/bgquiz">
 
     <!-- HEADER -->
     <RelativeLayout
@@ -51,7 +51,7 @@
     <TextView
         android:id="@+id/tvNumber"
         android:text="Soal 1 dari 5"
-        android:textSize="14sp"
+        android:textSize="18sp"
         android:layout_marginTop="16dp"
         android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
@@ -60,7 +60,7 @@
     <!-- PERTANYAAN -->
     <TextView
         android:id="@+id/tvQuestion"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginTop="12dp"
         android:textColor="#FFFFFF"
@@ -74,7 +74,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="4dp"
-        android:layout_marginTop="12dp">
+        android:layout_marginTop="14dp">
 
         <RadioButton
             android:id="@+id/opt1"
@@ -118,6 +118,7 @@
         android:layout_width="150dp"
         android:layout_height="48dp"
         android:textStyle="bold"
+        android:textSize="18sp"
         android:textColor="#242323"
         android:background="@drawable/bg_button_next"/>
 
