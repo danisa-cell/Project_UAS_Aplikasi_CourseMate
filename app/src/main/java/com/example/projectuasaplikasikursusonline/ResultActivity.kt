@@ -5,128 +5,84 @@ import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projectuasaplikasikursusonline.storage.CourseProgressStorage
-import com.example.projectuasaplikasikursusonline.R
 
 class ResultActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_result)   // Menampilkan layout activity_result.xml
+        setContentView(R.layout.activity_result)
 
-        // =============================
-        // AMBIL DATA DARI INTENT
-        // =============================
-        val score = intent.getIntExtra("score", 0)          // Nilai benar
-        val total = intent.getIntExtra("total", 0)          // Total soal
-        val courseId = intent.getStringExtra("courseId") ?: ""  // ID course
+        val score = intent.getIntExtra("score", 0)
+        val total = intent.getIntExtra("total", 0)
+        val courseId = intent.getStringExtra("courseId") ?: ""
 
-        // List soal (objek Quiz) dikirim sebagai Serializable
-        val questionList = intent.getSerializableExtra("questions") as ArrayList<Quiz>
+        val questionList =
+            intent.getSerializableExtra("questions") as ArrayList<Quiz>
+        val userAnswers =
+            intent.getIntegerArrayListExtra("userAnswers") ?: arrayListOf()
 
-        // Jawaban user dikirim sebagai ArrayList<Int>
-        val userAnswers = intent.getIntegerArrayListExtra("userAnswers") ?: arrayListOf()
-
-        // =============================
-        // HITUNG PERSENTASE NILAI
-        // =============================
         val percentage = if (total > 0) (score * 100) / total else 0
 
-        // =============================
-        // SIMPAN PROGRESS QUIZ KE STORAGE
-        // =============================
+        // ✅ Quiz progress dihitung dari skor (0-50%)
+        val quizProgress50 =
+            if (total > 0) ((score.toDouble() / total.toDouble()) * 50).toInt() else 0
+
+        // ✅ Update quiz progress ke storage
         if (courseId.isNotEmpty()) {
-            CourseProgressStorage.updateQuizProgress(this, courseId, percentage)
+            CourseProgressStorage.updateQuizProgress(this, courseId, quizProgress50)
         }
 
-        // =============================
-        // INISIALISASI UI
-        // =============================
-        val tvScore = findViewById<TextView>(R.id.tvScore)                // Teks nilai
-        val container = findViewById<LinearLayout>(R.id.containerAnswers) // Tempat preview jawaban
-        val btnRetry = findViewById<Button>(R.id.btnRetry)                // Tombol ulangi
-        val btnFinish = findViewById<Button>(R.id.btnFinish)              // Tombol selesai
+        val tvScore = findViewById<TextView>(R.id.tvScore)
+        val container = findViewById<LinearLayout>(R.id.containerAnswers)
+        val btnRetry = findViewById<Button>(R.id.btnRetry)
+        val btnFinish = findViewById<Button>(R.id.btnFinish)
 
-        // Tampilkan nilai ke TextView
         tvScore.text = "Nilai Kamu: $percentage%\n($score dari $total soal)"
 
-        // Bersihkan container agar tidak dobel
         container.removeAllViews()
+        val limit = minOf(3, questionList.size)
 
-        // Batasi preview hanya 3 soal pertama
-        val previewLimit = minOf(3, questionList.size)
+        for (i in 0 until limit) {
+            val q = questionList[i]
+            val userIdx = userAnswers.getOrNull(i) ?: -1
 
-        // =============================
-        // TAMPILKAN 3 SOAL PERTAMA
-        // =============================
-        for (i in 0 until previewLimit) {
-
-            val q = questionList[i]                 // Soal ke-i
-            val userIndex = userAnswers.getOrNull(i) ?: -1   // Jawaban user, default -1
-
-            // Buat TextView baru untuk setiap soal
             val tv = TextView(this)
-
             tv.text = """
                 • Soal ${i + 1}
                 ${q.question}
 
-                Jawaban Kamu : ${if (userIndex >= 0) q.options[userIndex] else "—"}
+                Jawaban Kamu : ${if (userIdx >= 0) q.options[userIdx] else "—"}
                 Jawaban Benar : ${q.options[q.correctIndex]}
             """.trimIndent()
 
-            tv.textSize = 14f                       // Ukuran teks
-            tv.setPadding(16, 16, 16, 16)           // Padding agar rapi
-            tv.setTextColor(android.graphics.Color.BLACK)
-
-            // Warna latar: hijau bila benar, merah bila salah
+            tv.textSize = 14f
+            tv.setPadding(16, 16, 16, 16)
+            tv.setTextColor(0xFF000000.toInt())
             tv.setBackgroundColor(
-                if (userIndex == q.correctIndex)
-                    0xFFDFFFD6.toInt()     // hijau muda
-                else
-                    0xFFFFD6D6.toInt()     // merah muda
+                if (userIdx == q.correctIndex) 0xFFDFFFD6.toInt() else 0xFFFFD6D6.toInt()
             )
 
-            container.addView(tv)                    // Tambahkan ke container
+            container.addView(tv)
         }
 
-        // =============================
-        // JIKA SOAL LEBIH DARI 3 → TAMBAH TEKS TAMBAHAN
-        // =============================
-        if (questionList.size > 3) {
-            val tvMore = TextView(this)
-            tvMore.text = "\n... dan ${questionList.size - 3} soal lainnya."
-            tvMore.textSize = 14f
-            tvMore.setPadding(16, 16, 16, 16)
-            container.addView(tvMore)               // Tambahkan teks info
-        }
-
-        // =============================
-        // TOMBOL RETRY (ULANG QUIZ)
-        // =============================
         btnRetry.setOnClickListener {
-            val retryIntent = Intent(this, QuizActivity::class.java)
-
-            retryIntent.putExtra("courseId", courseId)   // Kirim courseId
-
-            startActivity(retryIntent)  // Mulai ulang quiz
-            finish()                    // Tutup halaman hasil
+            val retry = Intent(this, QuizActivity::class.java)
+            retry.putExtra("courseId", courseId)
+            startActivity(retry)
+            finish()
         }
 
-        // =============================
-        // TOMBOL FINISH (LANJUT KE FINISH SCREEN)
-        // =============================
+        // ✅ FIX: Ganti nama variable 'finish' jadi 'finishIntent'
+        //    agar tidak bentrok dengan function finish()
         btnFinish.setOnClickListener {
-            val intent = Intent(this, FinishActivity::class.java)
-
-            // Kirim data lengkap
-            intent.putExtra("score", score)
-            intent.putExtra("total", total)
-            intent.putExtra("questions", questionList)
-            intent.putExtra("userAnswers", userAnswers)
-            intent.putExtra("courseId", courseId)
-
-            startActivity(intent)   // Masuk halaman finish
-            finish()
+            val finishIntent = Intent(this, FinishActivity::class.java)
+            finishIntent.putExtra("score", score)
+            finishIntent.putExtra("total", total)
+            finishIntent.putExtra("questions", questionList)
+            finishIntent.putExtra("userAnswers", userAnswers)
+            finishIntent.putExtra("courseId", courseId)
+            startActivity(finishIntent)
+            finish()  // ✅ Sekarang function finish() bisa dipanggil dengan benar
         }
     }
 }

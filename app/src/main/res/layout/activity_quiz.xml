@@ -50,7 +50,7 @@
     <!-- NOMOR SOAL -->
     <TextView
         android:id="@+id/tvNumber"
-        android:text="Soal 1 dari 5"
+        android:text="Soal 1 dari 15"
         android:textSize="18sp"
         android:layout_marginTop="16dp"
         android:textColor="#FFFFFF"
@@ -108,18 +108,38 @@
 
     </RadioGroup>
 
-    <!-- NEXT BUTTON -->
-    <Button
-        android:id="@+id/btnNext"
-        android:text="Next"
+    <!-- NAVIGATION BUTTONS (PREV + NEXT) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
         android:layout_marginTop="24dp"
-        android:layout_marginBottom="16dp"
-        android:layout_gravity="center"
-        android:layout_width="150dp"
-        android:layout_height="48dp"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:textColor="#FFFFFF"
-        android:background="@drawable/bg_button_next"/>
+        android:layout_marginBottom="16dp">
+
+        <Button
+            android:id="@+id/btnPrev"
+            android:text="Back"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_style" />
+
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="139dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button_next"
+            android:text="Next"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 </LinearLayout>
