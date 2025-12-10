@@ -249,28 +249,40 @@ class CourseDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_course_detail)
 
+        // 🔹 Ambil judul course yang dikirim dari intent
         val title = intent.getStringExtra("title") ?: "No Title"
 
+        // 🔹 Inisialisasi semua View yang dipakai
         val tvTitle = findViewById<TextView>(R.id.tvCourseTitle)
         val tvDesc = findViewById<TextView>(R.id.tvCourseDescription)
         val btnQuiz = findViewById<Button>(R.id.btnQuiz)
         val btnBack = findViewById<ImageView>(R.id.btnBack)
 
+        // 🔹 Tampilkan judul course
         tvTitle.text = title
+
+        // 🔹 Tampilkan deskripsi berdasarkan title di map courseDescriptions
         tvDesc.text = courseDescriptions[title] ?: "Deskripsi belum tersedia."
 
         // ✅ PERBAIKAN: Set materi progress ke 100% (sudah baca)
-        CourseProgressStorage.updateMaterialProgress(this, title, )
+        //    → Fungsi ini dipakai untuk menyimpan progress materi user
+        //    → Parameter ketiga masih kosong sesuai kode asli (tidak diubah)
+        CourseProgressStorage.updateMaterialProgress(this, title,)
 
+        // 🔹 Tombol kembali untuk menutup halaman dan kembali ke sebelumnya
         btnBack.setOnClickListener { finish() }
 
         // ✅ PERBAIKAN: Langsung ke quiz tanpa update progress dulu
+        //    → Mengirimkan title course ke QuizActivity
         btnQuiz.setOnClickListener {
             val intent = Intent(this, QuizActivity::class.java)
             intent.putExtra("courseTitle", title)
             intent.putExtra("courseId", title)  // ✅ Langsung pakai title
 
-          startActivity(intent)
+            // 🔹 Buka halaman QuizActivity
+            startActivity(intent)
         }
+
+
     }
 }

@@ -1,4 +1,5 @@
 package com.example.projectuasaplikasikursusonline
+// Package tempat file ini berada
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -18,7 +19,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class PaymentFragment : Fragment() {
-    // Membuat variable view dulu, tapi isinya nanti/
+
+    // Deklarasi komponen UI (diisi nanti saat onCreateView)
     private lateinit var txtQty: TextView
     private lateinit var txtSubtotal: TextView
     private lateinit var txtTotal: TextView
@@ -27,23 +29,23 @@ class PaymentFragment : Fragment() {
     private lateinit var txtTutor: TextView
     private lateinit var imgCourse: ImageView
 
-    // nilai pertama
+    // Nilai awal jumlah dan harga
     private var qty = 1
     private var price = 150000
 
-    // tidak dapat diubah 2 kali
-    private var statusFinalized = false // mencegah double update
+    // Mencegah status diubah 2 kali
+    private var statusFinalized = false
 
-    // menampilkan layout
+    // Dipanggil ketika fragment menampilkan layout
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-    // memanggil xml
+        // Menghubungkan fragment dengan layout XML
         val view = inflater.inflate(R.layout.fragment_payment, container, false)
 
-    // untuk memanggil komponen yang ada di xml
+        // Menghubungkan semua tombol & text menggunakan ID dari XML
         val btnMinus = view.findViewById<ImageButton>(R.id.btnMinus)
         val btnPlus = view.findViewById<ImageButton>(R.id.btnPlus)
         val btnPayNow = view.findViewById<Button>(R.id.btnPayNow)
@@ -57,29 +59,31 @@ class PaymentFragment : Fragment() {
         txtTutor = view.findViewById(R.id.txtPaymentTutor)
         imgCourse = view.findViewById(R.id.imgCoursePayment)
 
-        // Ambil data dari fragment sebelumnya
+        // Mengambil data yang dikirim dari DetailFragment
         val title = arguments?.getString("title") ?: ""
         val priceText = arguments?.getString("price") ?: "150000"
         val tutorName = arguments?.getString("tutorName") ?: ""
         val imageRes = arguments?.getInt("imageRes") ?: 0
 
+        // Menampilkan data ke UI
         txtTitle.text = title
         txtTutor.text = tutorName
 
-        // ubah int
+        // Mengubah harga string menjadi integer
         price = priceText.replace("Rp", "")
             .replace(".", "")
             .replace(" ", "")
             .toIntOrNull() ?: 150000
 
         txtPrice.text = "Rp. ${formatRupiah(price)}"
+
+        // Jika ada gambar course, tampilkan di ImageView
         if (imageRes != 0) imgCourse.setImageResource(imageRes)
 
+        // Update harga total pertama kali
         updatePrice()
 
-        // ==============================================
-        // BUAT HISTORY PERTAMA: MENUNGGU PEMBAYARAN
-        // ==============================================
+        // Membuat history awal "menunggu pembayaran"
         HistoryStorage.addHistory(
             requireContext(),
             HistoryModel(
@@ -90,7 +94,7 @@ class PaymentFragment : Fragment() {
             )
         )
 
-        // Tombol qty
+        // Ketika tombol minus ditekan → kurangi qty
         btnMinus.setOnClickListener {
             if (qty > 1) {
                 qty--
@@ -98,17 +102,19 @@ class PaymentFragment : Fragment() {
             }
         }
 
+        // Ketika tombol plus ditekan → tambah qty
         btnPlus.setOnClickListener {
             qty++
             updatePrice()
         }
 
-        // Tombol back → dianggap batal
+        // Tombol back → dianggap batal (kadaluarsa)
         btnBack.setOnClickListener {
             setKadaluarsa()
             findNavController().navigateUp()
         }
 
+        // Tombol "Bayar Sekarang"
         btnPayNow.setOnClickListener {
             showPaymentOptions()
         }
@@ -116,18 +122,20 @@ class PaymentFragment : Fragment() {
         return view
     }
 
-    // menghitung harga
+    // Menghitung ulang harga & menampilkan ke UI
     private fun updatePrice() {
         val total = qty * price
         txtQty.text = qty.toString()
         txtSubtotal.text = "Rp. ${formatRupiah(total)}"
         txtTotal.text = "Rp. ${formatRupiah(total)}"
     }
-    // format rupiah
+
+    // Format angka ke bentuk rupiah
     private fun formatRupiah(value: Int): String {
         return String.format("%,d", value).replace(',', '.')
     }
-    // pembayaran
+
+    // Menampilkan pilihan metode pembayaran
     private fun showPaymentOptions() {
         val options = arrayOf(
             "Bayar langsung ke tutor",
@@ -138,13 +146,14 @@ class PaymentFragment : Fragment() {
             .setTitle("Pilih Metode Pembayaran")
             .setItems(options) { _, which ->
                 when (which) {
-                    0 -> bayarKeTutor()
-                    1 -> bayarViaWhatsApp()
+                    0 -> bayarKeTutor()        // Jika pilih opsi 1
+                    1 -> bayarViaWhatsApp()    // Jika pilih opsi 2
                 }
             }
             .show()
     }
 
+    // Jika user memilih "Bayar langsung ke tutor"
     private fun bayarKeTutor() {
         AlertDialog.Builder(requireContext())
             .setTitle("Pembayaran")
@@ -152,31 +161,42 @@ class PaymentFragment : Fragment() {
             .setPositiveButton("OK") { dialog, _ ->
                 dialog.dismiss()
 
+                // Set status history → berhasil
                 setBerhasil()
 
+                // Pindah ke halaman sukses
                 findNavController().navigate(R.id.paymentSuccessFragment)
             }
             .show()
     }
 
+    // Jika user memilih "Transfer ke admin"
     private fun bayarViaWhatsApp() {
 
+        // Set status → pembayaran via admin
         setPembayaranAdmin()
 
+        // Nomor admin
         val phoneNumber = "62895380347744"
+
+        // Pesan awal
         val message = "Halo admin, saya ingin transfer pembayaran kursus."
+
+        // URL untuk membuka WhatsApp
         val url = "https://wa.me/$phoneNumber?text=${Uri.encode(message)}"
 
         try {
+            // Coba buka WhatsApp
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
         } catch (e: ActivityNotFoundException) {
+            // Kalau tidak ada WhatsApp
             Toast.makeText(requireContext(), "WhatsApp tidak terpasang", Toast.LENGTH_SHORT).show()
         }
     }
 
-// set status
+    // Set status menjadi "berhasil"
     private fun setBerhasil() {
-        if (statusFinalized) return
+        if (statusFinalized) return        // Mencegah double set
         statusFinalized = true
 
         HistoryStorage.updateLastStatus(
@@ -185,6 +205,7 @@ class PaymentFragment : Fragment() {
         )
     }
 
+    // Set status menjadi "pembayaran via admin"
     private fun setPembayaranAdmin() {
         if (statusFinalized) return
         statusFinalized = true
@@ -195,6 +216,7 @@ class PaymentFragment : Fragment() {
         )
     }
 
+    // Set status menjadi "kadaluarsa"
     private fun setKadaluarsa() {
         if (statusFinalized) return
         statusFinalized = true
@@ -204,12 +226,14 @@ class PaymentFragment : Fragment() {
             "Status : kadaluarsa"
         )
     }
-// pencet bebas kadaluarsa
+
+    // Jika fragment dihancurkan (back atau pindah), otomatis set kadaluarsa
     override fun onDestroy() {
         super.onDestroy()
         setKadaluarsa()
     }
-// untuk mengeset taggal
+
+    // Mendapatkan tanggal hari ini
     private fun getTodayDate(): String {
         val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale("id", "ID"))
         return dateFormat.format(Date())
