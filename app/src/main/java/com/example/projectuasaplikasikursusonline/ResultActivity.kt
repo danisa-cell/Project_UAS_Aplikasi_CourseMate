@@ -15,19 +15,20 @@ class ResultActivity : AppCompatActivity() {
 
         val score = intent.getIntExtra("score", 0)
         val total = intent.getIntExtra("total", 0)
-
         val courseId = intent.getStringExtra("courseId") ?: ""
 
         val questionList = intent.getSerializableExtra("questions") as ArrayList<Quiz>
         val userAnswers = intent.getIntegerArrayListExtra("userAnswers") ?: arrayListOf()
 
-// ResultActivity.kt - Bagian onCreate()
+        // Hitung persentase
         val percentage = if (total > 0) (score * 100) / total else 0
-        if (courseId.isNotEmpty()) {
-            val courseId = intent.getStringExtra("courseId") ?: ""
-            CourseProgressStorage.updateQuizProgress(this, courseId, percentage)
-       }
 
+        // Simpan progress quiz
+        if (courseId.isNotEmpty()) {
+            CourseProgressStorage.updateQuizProgress(this, courseId, percentage)
+        }
+
+        // UI
         val tvScore = findViewById<TextView>(R.id.tvScore)
         val container = findViewById<LinearLayout>(R.id.containerAnswers)
         val btnRetry = findViewById<Button>(R.id.btnRetry)
@@ -39,7 +40,6 @@ class ResultActivity : AppCompatActivity() {
         val previewLimit = minOf(3, questionList.size)
 
         for (i in 0 until previewLimit) {
-
             val q = questionList[i]
             val userIndex = userAnswers.getOrNull(i) ?: -1
 
@@ -71,6 +71,7 @@ class ResultActivity : AppCompatActivity() {
             container.addView(tvMore)
         }
 
+        // Retry quiz
         btnRetry.setOnClickListener {
             val retryIntent = Intent(this, QuizActivity::class.java)
             retryIntent.putExtra("courseId", courseId)
@@ -78,18 +79,14 @@ class ResultActivity : AppCompatActivity() {
             finish()
         }
 
-        // ✅ FIX TERPENTING — KIRIM SEMUA DATA KE FinishActivity
+        // Finish
         btnFinish.setOnClickListener {
-
             val intent = Intent(this, FinishActivity::class.java)
-
-            // KIRIM DATA LENGKAP
             intent.putExtra("score", score)
             intent.putExtra("total", total)
             intent.putExtra("questions", questionList)
             intent.putExtra("userAnswers", userAnswers)
             intent.putExtra("courseId", courseId)
-
             startActivity(intent)
             finish()
         }

@@ -57,7 +57,7 @@ class FinishActivity : AppCompatActivity() {
                 val progressAfter = CourseProgressStorage.getTotalProgress(this, courseId)
                 val progressIncrease = progressAfter - progressBefore
 
-                Log.d(TAG, "Progress Before: $progressBefore%")
+
                 Log.d(TAG, "Progress After: $progressAfter%")
                 Log.d(TAG, "Progress Increase: +$progressIncrease%")
 
@@ -65,7 +65,7 @@ class FinishActivity : AppCompatActivity() {
                 tvProgressInfo.text = """
                     Progress Course
                     
-                    Progress Sebelum: $progressBefore%
+                  
                     Progress Sekarang: $progressAfter%
                     
                     Progress Bertambah: +$progressIncrease%

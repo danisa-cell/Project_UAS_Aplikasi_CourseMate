@@ -260,7 +260,7 @@ class CourseDetailActivity : AppCompatActivity() {
         tvDesc.text = courseDescriptions[title] ?: "Deskripsi belum tersedia."
 
         // ✅ PERBAIKAN: Set materi progress ke 100% (sudah baca)
-        CourseProgressStorage.updateMaterialProgress(this, title, 100)
+        CourseProgressStorage.updateMaterialProgress(this, title, )
 
         btnBack.setOnClickListener { finish() }
 

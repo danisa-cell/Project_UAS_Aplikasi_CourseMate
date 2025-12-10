@@ -21,22 +21,9 @@ class PaymentSuccessFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Tombol back kiri atas
         val btnBack = view.findViewById<ImageView>(R.id.btnBack)
         btnBack.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        // Sembunyikan bottom nav saat masuk halaman ini
-        (activity as? HomeActivity)?.setBottomNavVisibility(false)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        // Tampilkan kembali saat keluar halaman ini
-        (activity as? HomeActivity)?.setBottomNavVisibility(true)
     }
 }

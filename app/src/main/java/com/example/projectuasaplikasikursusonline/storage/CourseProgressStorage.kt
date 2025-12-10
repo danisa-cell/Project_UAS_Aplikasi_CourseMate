@@ -6,38 +6,39 @@ object CourseProgressStorage {
 
     private const val PREF = "course_progress"
 
-    // SIMPAN PROGRESS MATERI
-    fun updateMaterialProgress(context: Context, courseId: String, progress: Int) {
+    // SIMPAN PROGRESS MATERI (selalu 50%)
+    fun updateMaterialProgress(context: Context, courseId: String) {
         context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
             .edit()
-            .putInt("${courseId}_material", progress)
+            .putInt("${courseId}_material", 50)
             .apply()
     }
 
-    // SIMPAN PROGRESS QUIZ
+    // SIMPAN PROGRESS QUIZ (0–100)
     fun updateQuizProgress(context: Context, courseId: String, progress: Int) {
+        val safeQuiz = progress.coerceIn(0, 100)
+
         context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
             .edit()
-            .putInt("${courseId}_quiz", progress)
+            .putInt("${courseId}_quiz", safeQuiz)
             .apply()
     }
 
-    // AMBIL TOTAL PROGRESS (RATA2)
+    // TOTAL = 50 + quiz, dibatasi max 100
     fun getTotalProgress(context: Context, courseId: String): Int {
         val pref = context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
 
         val material = pref.getInt("${courseId}_material", 0)
         val quiz = pref.getInt("${courseId}_quiz", 0)
 
-        return (material + quiz) / 2
+        return (material + quiz).coerceAtMost(100)
     }
 
-    // 🔥 DIPAKAI MyCourseAdapter → WAJIB ADA
+    // DIPAKAI MyCourseAdapter
     fun getProgress(context: Context, courseId: String): Int {
         return getTotalProgress(context, courseId)
     }
 
-    // ✅ RESET PROGRESS 1 COURSE (TAMBAHKAN INI)
     fun resetCourseProgress(context: Context, courseId: String) {
         val prefs = context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
         prefs.edit()
@@ -46,7 +47,6 @@ object CourseProgressStorage {
             .apply()
     }
 
-    // ✅ RESET SEMUA PROGRESS
     fun resetAllProgress(context: Context) {
         val prefs = context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
         prefs.edit().clear().apply()

@@ -156,7 +156,7 @@ class PaymentFragment : Fragment() {
 
         setPembayaranAdmin()
 
-        val phoneNumber = "6285380347744"
+        val phoneNumber = "62895380347744"
         val message = "Halo admin, saya ingin transfer pembayaran kursus."
         val url = "https://wa.me/$phoneNumber?text=${Uri.encode(message)}"
 
