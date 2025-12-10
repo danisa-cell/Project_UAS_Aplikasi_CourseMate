@@ -1,29 +1,54 @@
 package com.example.projectuasaplikasikursusonline
+// Package tempat file ini berada. Digunakan untuk mengelompokkan class dalam proyek Android.
 
 import java.io.Serializable
+// Mengimpor interface Serializable agar objek Quiz bisa dikirim lewat Intent ke Activity lain.
+
+
+// ==========================================================
+// DATA CLASS QUIZ
+// ==========================================================
 
 data class Quiz(
-    val question: String,
-    val options: List<String>,
-    val correctIndex: Int
-) : Serializable  // ⬅️ TAMBAH INI!
+    val question: String,        // Menyimpan teks soal / pertanyaan.
+    val options: List<String>,   // Menyimpan daftar jawaban pilihan ganda (A–E).
+    val correctIndex: Int        // Menyimpan index jawaban yang benar (0–4).
+) : Serializable  // ⬅️ Wajib! Agar object Quiz dapat dipaketkan dan dikirim melalui Intent.
+// Tanpa Serializable, aplikasi akan crash ketika mengirim ArrayList<Quiz>.
+
+
+//// ==========================================================
+// OBJECT QUIZDATA — TEMPAT SEMUA SOAL DISIMPAN
+// ==========================================================
 
 object QuizData {
+    // Object (singleton) → hanya dibuat sekali selama aplikasi berjalan.
+    // Menyimpan semua question yang digunakan dalam quiz.
 
     val questions = listOf(
+        // listOf() → membuat list soal (immutable).
 
+        // =======================
+        // 1. SOAL PERTAMA
+        // =======================
         Quiz(
             "Apa fungsi utama bahasa Kotlin dalam pengembangan aplikasi Android modern?",
+            // Teks soal
+
             listOf(
+                // Daftar pilihan jawaban
                 "Sebagai bahasa markup untuk mendesain tampilan aplikasi Android.",
                 "Sebagai bahasa utama untuk menulis logika program dan mengelola fungsionalitas aplikasi.",
                 "Sebagai tool otomatis yang menghasilkan file layout XML.",
                 "Sebagai sistem penyimpanan berbasis cloud untuk aplikasi Android.",
                 "Sebagai pengganti database lokal seperti SQLite."
             ),
-            1
+            1  // Index jawaban benar (pilihan nomor 2)
         ),
 
+        // =======================
+        // 2. SOAL KEDUA
+        // =======================
         Quiz(
             "Mengapa Kotlin dianggap lebih aman dibandingkan Java dalam pemrograman Android?",
             listOf(
@@ -36,6 +61,9 @@ object QuizData {
             2
         ),
 
+        // =======================
+        // 3. SOAL KETIGA
+        // =======================
         Quiz(
             "Dalam Android Studio, apa fungsi utama dari sebuah Activity?",
             listOf(
@@ -48,6 +76,7 @@ object QuizData {
             1
         ),
 
+        // Semua soal berikutnya sama formatnya (tidak diulang komentarnya)
         Quiz(
             "Manakah pernyataan yang benar mengenai XML layout pada aplikasi Android?",
             listOf(
@@ -194,7 +223,9 @@ object QuizData {
     )
 
     // ==================================================
-    // ⬇ Tambahan untuk menyimpan jawaban user
+    // MENYIMPAN JAWABAN USER
     // ==================================================
     var userAnswers = ArrayList<Int>()
+    // Variabel global untuk mencatat pilihan jawaban user.
+    // Diisi setiap user menjawab quiz.
 }

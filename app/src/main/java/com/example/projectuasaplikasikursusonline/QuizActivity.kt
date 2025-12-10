@@ -24,8 +24,11 @@ class QuizActivity : AppCompatActivity() {
     private lateinit var btnNext: Button
     private lateinit var btnBack: ImageView
 
+    // 🔥 LIST SOAL DIACAK
     private val questionList = QuizData.questions.shuffled()
-    private val userAnswers = ArrayList<Int>()   // HARUS ArrayList!
+
+    // 🔥 WAJIB PAKAI ArrayList AGAR BISA DIKIRIM LEWAT INTENT
+    private val userAnswers = ArrayList<Int>()
 
     private lateinit var courseId: String
     private lateinit var courseTitle: String
@@ -34,9 +37,11 @@ class QuizActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz)
 
+        // 🔥 TERIMA DATA DARI CourseDetailActivity
         courseId = intent.getStringExtra("courseId") ?: ""
         courseTitle = intent.getStringExtra("courseTitle") ?: ""
 
+        // 🔥 INISIALISASI VIEW
         tvNumber = findViewById(R.id.tvNumber)
         tvQuestion = findViewById(R.id.tvQuestion)
         rgOptions = findViewById(R.id.rgOptions)
@@ -50,10 +55,13 @@ class QuizActivity : AppCompatActivity() {
         btnNext = findViewById(R.id.btnNext)
         btnBack = findViewById(R.id.btnBack)
 
+        // 🔥 KLIK BACK KELUAR
         btnBack.setOnClickListener { finish() }
 
+        // 🔥 MUAT SOAL PERTAMA
         loadQuestion()
 
+        // 🔥 TOMBOL NEXT
         btnNext.setOnClickListener { checkAnswer() }
     }
 
@@ -69,12 +77,16 @@ class QuizActivity : AppCompatActivity() {
         opt4.text = q.options[3]
         opt5.text = q.options[4]
 
+        // 🔥 HAPUS PILIHAN TERAKHIR
         rgOptions.clearCheck()
 
+        // 🔥 UBAH TOMBOL DI SOAL TERAKHIR
         btnNext.text = if (index == questionList.lastIndex) "Hasil Quiz" else "Next"
     }
 
     private fun checkAnswer() {
+
+        // 🔥 CEK JAWABAN YANG DIPILIH
         val chosen = when (rgOptions.checkedRadioButtonId) {
             R.id.opt1 -> 0
             R.id.opt2 -> 1
@@ -84,36 +96,50 @@ class QuizActivity : AppCompatActivity() {
             else -> -1
         }
 
+        // 🔥 VALIDASI JIKA BELUM PILIH JAWABAN
         if (chosen == -1) {
             Toast.makeText(this, "Pilih jawaban terlebih dahulu!", Toast.LENGTH_SHORT).show()
             return
         }
 
+        // 🔥 SIMPAN JAWABAN USER
         userAnswers.add(chosen)
 
+        // 🔥 HITUNG SKOR
         if (chosen == questionList[index].correctIndex) score++
 
+        // 🔥 JIKA BELUM HABIS, LANJUT SOAL BERIKUTNYA
         if (index < questionList.size - 1) {
             index++
             loadQuestion()
         } else {
+            // 🔥 JIKA SUDAH HABIS, PINDAH HALAMAN HASIL
             navigateToResult()
         }
     }
 
     private fun navigateToResult() {
 
+        // 🔥 BAGIAN INTENT YANG KAMU CARI!!!
         val intent = Intent(this, ResultActivity::class.java)
+        // ---- Jika halaman kamu FinishActivity, ganti ke:
+        // val intent = Intent(this, FinishActivity::class.java)
+
+        // 🔥 KIRIM SKOR
         intent.putExtra("score", score)
         intent.putExtra("total", questionList.size)
 
-        // WAJIB
-        intent.putExtra("questions", ArrayList(questionList))   // FIX
-        intent.putExtra("userAnswers", userAnswers)             // FIX
+        // 🔥 KIRIM DAFTAR SOAL (HARUS ArrayList)
+        intent.putExtra("questions", ArrayList(questionList))
 
+        // 🔥 KIRIM JAWABAN USER
+        intent.putExtra("userAnswers", userAnswers)
+
+        // 🔥 KIRIM DATA COURSE
         intent.putExtra("courseId", courseId)
         intent.putExtra("courseTitle", courseTitle)
 
+        // 🔥 PINDAH ACTIVITY
         startActivity(intent)
         finish()
     }
