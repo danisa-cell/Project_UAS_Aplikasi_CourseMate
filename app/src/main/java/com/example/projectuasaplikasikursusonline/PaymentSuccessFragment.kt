@@ -10,7 +10,7 @@ import com.example.projectuasaplikasikursusonline.HomeActivity
 import com.example.projectuasaplikasikursusonline.R
 
 class PaymentSuccessFragment : Fragment() {
-
+    // tampilan fragment
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -18,9 +18,10 @@ class PaymentSuccessFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_payment_success, container, false)
     }
 
+    // mengambil komponen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        // tombol back
         val btnBack = view.findViewById<ImageView>(R.id.btnBack)
         btnBack.setOnClickListener {
             parentFragmentManager.popBackStack()

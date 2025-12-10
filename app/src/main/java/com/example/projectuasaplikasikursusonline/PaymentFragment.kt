@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class PaymentFragment : Fragment() {
-
+    // Membuat variable view dulu, tapi isinya nanti/
     private lateinit var txtQty: TextView
     private lateinit var txtSubtotal: TextView
     private lateinit var txtTotal: TextView
@@ -27,18 +27,23 @@ class PaymentFragment : Fragment() {
     private lateinit var txtTutor: TextView
     private lateinit var imgCourse: ImageView
 
+    // nilai pertama
     private var qty = 1
     private var price = 150000
 
+    // tidak dapat diubah 2 kali
     private var statusFinalized = false // mencegah double update
 
+    // menampilkan layout
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
+    // memanggil xml
         val view = inflater.inflate(R.layout.fragment_payment, container, false)
 
+    // untuk memanggil komponen yang ada di xml
         val btnMinus = view.findViewById<ImageButton>(R.id.btnMinus)
         val btnPlus = view.findViewById<ImageButton>(R.id.btnPlus)
         val btnPayNow = view.findViewById<Button>(R.id.btnPayNow)
@@ -61,6 +66,7 @@ class PaymentFragment : Fragment() {
         txtTitle.text = title
         txtTutor.text = tutorName
 
+        // ubah int
         price = priceText.replace("Rp", "")
             .replace(".", "")
             .replace(" ", "")
@@ -110,17 +116,18 @@ class PaymentFragment : Fragment() {
         return view
     }
 
+    // menghitung harga
     private fun updatePrice() {
         val total = qty * price
         txtQty.text = qty.toString()
         txtSubtotal.text = "Rp. ${formatRupiah(total)}"
         txtTotal.text = "Rp. ${formatRupiah(total)}"
     }
-
+    // format rupiah
     private fun formatRupiah(value: Int): String {
         return String.format("%,d", value).replace(',', '.')
     }
-
+    // pembayaran
     private fun showPaymentOptions() {
         val options = arrayOf(
             "Bayar langsung ke tutor",
@@ -167,10 +174,7 @@ class PaymentFragment : Fragment() {
         }
     }
 
-    // ============================
-    // STATUS HANDLER
-    // ============================
-
+// set status
     private fun setBerhasil() {
         if (statusFinalized) return
         statusFinalized = true
@@ -200,12 +204,12 @@ class PaymentFragment : Fragment() {
             "Status : kadaluarsa"
         )
     }
-
+// pencet bebas kadaluarsa
     override fun onDestroy() {
         super.onDestroy()
         setKadaluarsa()
     }
-
+// untuk mengeset taggal
     private fun getTodayDate(): String {
         val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale("id", "ID"))
         return dateFormat.format(Date())
