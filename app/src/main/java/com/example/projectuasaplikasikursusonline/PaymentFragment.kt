@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class PaymentFragment : Fragment() {
-    // Membuat variable view dulu, tapi isinya nanti/
+    // Membuat variable view dulu, tapi isinya nanti
     private lateinit var txtQty: TextView
     private lateinit var txtSubtotal: TextView
     private lateinit var txtTotal: TextView
