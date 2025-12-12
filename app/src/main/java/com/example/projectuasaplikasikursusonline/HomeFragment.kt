@@ -1,4 +1,5 @@
 package com.example.projectuasaplikasikursusonline
+// → Package aplikasi, biar file ini masuk dalam struktur project yang benar.
 
 import android.os.Bundle
 import android.text.Editable
@@ -12,15 +13,18 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectuasaplikasikursusonline.R
+// → Import library yang diperlukan, seperti Fragment, RecyclerView, Navigation, dll.
 
 
 class HomeFragment : Fragment() {
+    // → Deklarasi class Fragment untuk tampilan Home.
 
-    private lateinit var edtSearch: EditText
-    private lateinit var rvCourse: RecyclerView
-    private lateinit var adapter: CourseAdapter
+    private lateinit var edtSearch: EditText     // Input pencarian
+    private lateinit var rvCourse: RecyclerView  // List kursus
+    private lateinit var adapter: CourseAdapter  // Adapter list
 
-    // ✅ GUNAKAN DRAWABLE YANG BENAR-BENAR ADA
+    // → Daftar course dummy (static) lengkap dengan gambar, harga, tutor, deskripsi.
+    //   Tidak diubah sesuai permintaan kamu.
     private val courseList = listOf(
         Course(
             "Android Development",
@@ -189,24 +193,29 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // → Fungsi untuk menampilkan layout fragment.
         val view = inflater.inflate(R.layout.fragment_home, container, false)
+        // Inflate file layout fragment_home.xml
 
-        edtSearch = view.findViewById(R.id.edtSearch)
-        rvCourse = view.findViewById(R.id.rvCourse)
+        edtSearch = view.findViewById(R.id.edtSearch)  // Ambil ID EditText
+        rvCourse = view.findViewById(R.id.rvCourse)    // Ambil ID RecyclerView
 
         rvCourse.layoutManager = LinearLayoutManager(requireContext())
+        // → RecyclerView akan tampil vertikal seperti list biasa.
 
+        // → Buat adapter dan set ketika item course diklik
         adapter = CourseAdapter(courseList) { selectedCourse ->
-            // ✅ KIRIM DATA DENGAN BUNDLE (Tanpa Safe Args)
+            // Kirim data ke DetailFragment menggunakan Bundle (tanpa Safe Args)
             val bundle = Bundle().apply {
-                putString("title", selectedCourse.title)
-                putString("price", selectedCourse.price)
-                putInt("imageRes", selectedCourse.imageRes)
-                putString("tutorName", selectedCourse.tutorName)
-                putInt("tutorImage", selectedCourse.tutorImage)
-                putString("description", selectedCourse.description)
+                putString("title", selectedCourse.title)             // Judul course
+                putString("price", selectedCourse.price)             // Harga
+                putInt("imageRes", selectedCourse.imageRes)          // Gambar utama
+                putString("tutorName", selectedCourse.tutorName)     // Nama tutor
+                putInt("tutorImage", selectedCourse.tutorImage)      // Foto tutor
+                putString("description", selectedCourse.description) // Deskripsi
             }
 
+            // → Pindah halaman ke DetailFragment membawa data
             findNavController().navigate(
                 R.id.action_homeFragment_to_detailFragment,
                 bundle
@@ -214,20 +223,35 @@ class HomeFragment : Fragment() {
         }
 
         rvCourse.adapter = adapter
+        // → Set adapter ke RecyclerView agar list tampil
 
-        // ✅ Fitur search
+
+        // ============================
+        //      FITUR SEARCH
+        // ============================
         edtSearch.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {}
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                // → Tidak digunakan
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // → Tidak digunakan
+            }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // → Dipanggil setiap user mengetik di search box
+
                 val filtered = courseList.filter {
                     it.title.contains(s.toString(), ignoreCase = true)
+                    // → Filter daftar kursus berdasarkan judul
                 }
+
                 adapter.filterList(filtered)
+                // → Update isi RecyclerView dengan hasil filter
             }
         })
 
-        return view
+        return view   // Kembalikan layout untuk ditampilkan
     }
 }

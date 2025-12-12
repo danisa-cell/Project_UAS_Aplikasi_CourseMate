@@ -60,7 +60,7 @@
         android:text="Reset Progress"
         android:layout_marginTop="8dp"
         android:padding="10dp"
-        android:backgroundTint="#4E9452"
+        android:backgroundTint="#CCCFFF"
         android:textColor="@android:color/white"
         android:layout_gravity="center" />
     <RelativeLayout

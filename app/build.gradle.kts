@@ -61,6 +61,8 @@ dependencies {
 
     // Activity KTX — versi aman untuk compileSdk 34 + AGP 8.2.2
     implementation("androidx.activity:activity-ktx:1.8.2")
+    implementation(libs.navigation.fragment.ktx)
+    implementation(libs.navigation.ui.ktx)
 
     // ❌ Hapus ini karena bikin error compileSdk 36
     // implementation(libs.activity)

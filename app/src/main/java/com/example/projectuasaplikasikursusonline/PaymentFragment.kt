@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class PaymentFragment : Fragment() {
-    // Membuat variable view dulu, tapi isinya nanti
+    // Membuat variable view dulu, tapi isinya nanti/
     private lateinit var txtQty: TextView
     private lateinit var txtSubtotal: TextView
     private lateinit var txtTotal: TextView
@@ -163,8 +163,12 @@ class PaymentFragment : Fragment() {
 
         setPembayaranAdmin()
 
+        // ambil nominal total dari TextView
+        val totalText = txtTotal.text.toString() // contoh: "Rp. 600.000"
+
         val phoneNumber = "62895380347744"
-        val message = "Halo admin, saya ingin transfer pembayaran kursus."
+        val message = "Halo admin, saya ingin transfer pembayaran kursus sebesar $totalText"
+
         val url = "https://wa.me/$phoneNumber?text=${Uri.encode(message)}"
 
         try {
@@ -174,7 +178,7 @@ class PaymentFragment : Fragment() {
         }
     }
 
-// set status
+    // set status
     private fun setBerhasil() {
         if (statusFinalized) return
         statusFinalized = true
