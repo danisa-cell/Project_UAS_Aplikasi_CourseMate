@@ -164,10 +164,14 @@ class PaymentFragment : Fragment() {
         setPembayaranAdmin()
 
         // ambil nominal total dari TextView
-        val totalText = txtTotal.text.toString() // contoh: "Rp. 600.000"
+        val totalText = txtTotal.text.toString()   // contoh: "Rp. 600.000"
+
+        // ambil nama kursus
+        val courseName = txtTitle.text.toString()  // contoh: "UI/UX Design"
 
         val phoneNumber = "62895380347744"
-        val message = "Halo admin, saya ingin transfer pembayaran kursus sebesar $totalText"
+
+        val message = "Halo admin, saya ingin transfer pembayaran kursus $courseName sebesar $totalText"
 
         val url = "https://wa.me/$phoneNumber?text=${Uri.encode(message)}"
 
@@ -177,6 +181,7 @@ class PaymentFragment : Fragment() {
             Toast.makeText(requireContext(), "WhatsApp tidak terpasang", Toast.LENGTH_SHORT).show()
         }
     }
+
 
     // set status
     private fun setBerhasil() {
